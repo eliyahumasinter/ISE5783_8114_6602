@@ -2,8 +2,7 @@ package primitives;
 
 /**
  * This class will serve as a Point holding a Double3 object
- * @author Yishai
- * @author Eliyahu
+ * @author Eliyahu and Yishai
  */
 public class Point {
     Double3 xyz;
@@ -68,7 +67,7 @@ public class Point {
 
     @Override
     public String toString(){
-        return "Point: " + this.xyz.toString();
+        return "Point: " + this.xyz;
     }
 
     @Override

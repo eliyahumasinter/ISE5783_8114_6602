@@ -1,9 +1,8 @@
 package primitives;
 
-/*
-A class to represent a Vector
-@Author Yishai
-@Author Eliyahu
+/**
+ * A class to represent a Vector
+ * @author Eliyahu and Yishai
  */
 
 public class Vector extends Point{
@@ -110,7 +109,7 @@ public class Vector extends Point{
 
     @Override
     public String toString(){
-        return "Vector: " + this.xyz.toString();
+        return "Vector: " + this.xyz;
     }
 
 }
