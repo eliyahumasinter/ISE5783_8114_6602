@@ -12,7 +12,7 @@ public class Point {
      * Constructor that receives a Double3 object and sets xyz to the received object's values.
      * @param xyz - the received Double3 object
      */
-    Point(Double3 xyz) {
+    public Point(Double3 xyz) {
         this.xyz = new Double3(xyz.d1, xyz.d2, xyz.d3);
     }
 
@@ -22,7 +22,7 @@ public class Point {
      * @param d2
      * @param d3
      */
-    Point (double d1, double d2, double d3) {
+    public Point (double d1, double d2, double d3) {
         this.xyz = new Double3(d1, d2, d3);
     }
 
@@ -32,7 +32,7 @@ public class Point {
      * @return Vector
      */
     public Vector subtract(Point p) {
-    //TODO: implement
+        return new Vector(this.xyz.subtract((p.xyz)));
     }
 
     /**
@@ -41,7 +41,7 @@ public class Point {
      * @return a Point which lies at the end of the added Vector
      */
     public Point add(Vector v) {
-        //TODO: implement
+        return new Point(this.xyz.add(v.xyz));
     }
 
     /**
