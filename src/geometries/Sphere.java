@@ -3,6 +3,10 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * Represents a Sphere 3D shape
+ * @author Eliyahu and Yishai
+ */
 public class Sphere extends RadialGeometry{
     Point center;
 
@@ -16,4 +20,11 @@ public class Sphere extends RadialGeometry{
         return null;
     }
 
+    /**
+     * Getter for field center
+     * @return Point center
+     */
+    public Point getCenter() {
+        return center;
+    }
 }

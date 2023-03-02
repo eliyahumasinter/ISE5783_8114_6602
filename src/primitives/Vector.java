@@ -15,7 +15,7 @@ public class Vector extends Point{
      */
     public Vector(double d1, double d2, double d3){
         super(d1,d2,d3);
-        if (this.xyz.equals(Double3.ZERO){
+        if (this.xyz.equals(Double3.ZERO)){
             throw new IllegalArgumentException("Can not be 0");
         }
     }
@@ -26,7 +26,7 @@ public class Vector extends Point{
      */
     public Vector(Double3 d){
         super(d);
-        if (this.xyz.equals(Double3.ZERO){
+        if (this.xyz.equals(Double3.ZERO)){
             throw new IllegalArgumentException("Can not be 0");
         }
     }
@@ -37,7 +37,7 @@ public class Vector extends Point{
      * @return Vector
      */
     public Vector add(Vector v){
-        return new Vector(this.add(v).xyz);
+        return new Vector(this.xyz.add(v.xyz));
     }
 
     /**
@@ -61,7 +61,7 @@ public class Vector extends Point{
     /**
      * Return the cross product of 2 vectors
      * @param v a vector
-     * @return
+     * @return Vector
      */
     public Vector crossProduct(Vector v){
         double val1 = this.xyz.d2*v.xyz.d3 - this.xyz.d3*v.xyz.d2;
@@ -72,7 +72,6 @@ public class Vector extends Point{
 
     /**
      * Return the length squared of the distance with itself
-     * @param v a vector
      * @return double
      */
     public double lengthSquared(){
@@ -82,7 +81,6 @@ public class Vector extends Point{
 
     /**
      * Return the length between two vectors
-     * @param v a vector
      * @return double
      */
     public double length(){
