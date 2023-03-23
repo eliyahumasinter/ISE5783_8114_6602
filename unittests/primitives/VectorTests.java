@@ -33,10 +33,23 @@ class VectorTests {
 
         // TC11: test vector adding the negative of itself
         assertEquals(v1.add(new Vector(-1, -2, -3)).xyz, Double3.ZERO, "ERROR: Vector + -itself does not throw an exception");
-
         //TC12: test vector adding itself to itself.
         assertEquals(v1.add(new Vector(1,2,3)), v1.scale(2), "ERROR: Vector + itself throws wrong exception");
     }
+
+
+    /**
+     * Test method for {@link primitives.Vector#subtract(Point)}.
+     */
+    @Test
+    void testSubtract() {
+        // ============ Equivalence Partitions Tests ==============
+        assertEquals(v1.subtract(new Point(1,1,1)), new Vector(0,1,2), "ERROR: Vector subtraction doesn't work");
+
+
+        // TC01: test vector adding negative vector
+    }
+
 
     /**
     * Test method for {@link primitives.Vector#scale(int)} }.

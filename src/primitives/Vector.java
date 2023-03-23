@@ -102,7 +102,7 @@ public class Vector extends Point{
         if (obj == null) return false;
         if (!(obj instanceof Vector)) return false;
         Vector other = (Vector) obj;
-        return this.xyz.equals(other.xyz);
+        return super.equals(other);
     }
 
     @Override
