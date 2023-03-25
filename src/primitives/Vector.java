@@ -45,7 +45,7 @@ public class Vector extends Point{
      * @param i multiplier (integer)
      * @return A vector
      */
-    public Vector scale(int i){
+    public Vector scale(double i){
         return new Vector(this.xyz.scale(i));
     }
 

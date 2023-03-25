@@ -18,8 +18,8 @@ public class Plane implements Geometry {
      * @param p3
      */
     public Plane(Point p1, Point p2, Point p3) {
-        this.normal = null;
         this.p0 = p1;
+        this.normal = p2.subtract(p1).crossProduct(p3.subtract(p1)).normalize();
     }
 
     /**
@@ -50,7 +50,11 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public Vector getNormal(Point p) {return null; }
+    public Vector getNormal(Point p) {
+        return normal;
+    }
+
+
 
 
 }

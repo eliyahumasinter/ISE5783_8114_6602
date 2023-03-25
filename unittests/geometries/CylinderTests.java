@@ -6,29 +6,28 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static primitives.Util.isZero;
 
 /**
- * Test class for {@link geometries.Tube} class
+ * Test class for {@link geometries.Cylinder} class
  * @author Eliyahu and Yishai
  */
-class TubeTests {
+class CylinderTests {
 
 
     /**
-     * Test method for {@link geometries.Tube#getNormal(Point)} class
+     * Test method for {@link geometries.Cylinder#getNormal(Point)} class
      */
     @Test
     void testGetNormal() {
         Point p = new Point(1,0,1);
-        Tube tube = new Tube(1, new Ray(new Point(0,0,0), new Vector(0,0,1)));
+        Cylinder c = new Cylinder(1, new Ray(new Point(0,0,0), new Vector(0,0,1)), 1);
         //ensure there are no exceptions
-        assertDoesNotThrow(() -> tube.getNormal(p));
+        assertDoesNotThrow(() -> c.getNormal(p));
 
-        Vector result = tube.getNormal(p);
+        Vector result = c.getNormal(p);
 
         //ensure |result| = 1
         assertEquals(1,result.length(),0.000001, "Result is not normalized");
-        assertEquals(0,result.dotProduct(new Vector(0,0,1)), "Result is not normal to the tube");
+
     }
 }
