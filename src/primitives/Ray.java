@@ -8,6 +8,10 @@ public class Ray {
     Point p0;
     Vector dir;
 
+    public Vector getDir() {
+        return dir;
+    }
+
     /**
      * Initialises fields p0 and dir to Point p and normalized Vector v
      * @param p

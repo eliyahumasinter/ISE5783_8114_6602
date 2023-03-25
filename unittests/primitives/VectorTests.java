@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
 /**
- * Unit tests for primitives.Vector class
+ * Unit tests for {@link primitives.Vector} class
  * @author Eliyahu Masinter Yishai Dredzen
  */
 
@@ -44,10 +44,8 @@ class VectorTests {
     @Test
     void testSubtract() {
         // ============ Equivalence Partitions Tests ==============
-        assertEquals(v1.subtract(new Point(1,1,1)), new Vector(0,1,2), "ERROR: Vector subtraction doesn't work");
-
-
         // TC01: test vector adding negative vector
+        assertEquals(v1.subtract(new Point(1,1,1)), new Vector(0,1,2), "ERROR: Vector subtraction doesn't work");
     }
 
 

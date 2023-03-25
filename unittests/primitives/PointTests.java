@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for primitives.Point class
+ * Unit tests for {@link primitives.Point} class
  * @author Eliyahu Masinter Yishai Dredzen
  */
 class PointTests {
@@ -19,7 +19,6 @@ class PointTests {
         // ============ Equivalence Partitions Tests ==============
 
         // =============== Boundary Values Tests ==================
-
         // TC11: Test subtracting point from vector
         assertEquals(p1.add((new Vector(2, 3, 4)).subtract(p1)), new Vector(1, 1, 1), "ERROR: Point - Point does not work correctly");
     }
