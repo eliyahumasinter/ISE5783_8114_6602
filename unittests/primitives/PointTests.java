@@ -37,13 +37,21 @@ class PointTests {
         assertEquals(p1.add(new Vector(-1, -2, -3)), new Point(0, 0, 0), "ERROR: Point + Vector does not work correctly");
     }
 
+
+    /**
+     * Test method for {@link primitives.Point#distanceSquared(Point)}
+     */
     @Test
-    void distanceSquared() {
-        fail("Not yet implemented");
+    void testDistanceSquared() {
+        assertEquals(3, p1.distanceSquared(p2),"Distance squared Function not working");
     }
 
+    /**
+     * Test method for {@link primitives.Point#distance(Point)}
+     */
     @Test
-    void distance() {
-        fail("Not yet implemented");
+    void testDistance() {
+        assertEquals(Math.sqrt(3), p1.distance(p2),"Distance Function not working");
+
     }
 }
