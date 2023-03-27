@@ -19,15 +19,14 @@ class CylinderTests {
      */
     @Test
     void testGetNormal() {
-        //TODO: add tests
         Point p = new Point(1,0,1);
         Cylinder c = new Cylinder(1, new Ray(new Point(0,0,0), new Vector(0,0,1)), 1);
-        //ensure there are no exceptions
+        // ============ Equivalence Partitions Tests ==============
+
+        //TC01: ensure there are no exceptions
         assertDoesNotThrow(() -> c.getNormal(p));
-
         Vector result = c.getNormal(p);
-
-        //ensure |result| = 1
+        //TC02: ensure |result| = 1
         assertEquals(1,result.length(),0.000001, "Result is not normalized");
 
     }

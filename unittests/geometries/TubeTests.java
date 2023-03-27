@@ -20,7 +20,6 @@ class TubeTests {
      */
     @Test
     void testGetNormal() {
-        //TODO: check test types - need 1 EP and 1 BVA
 
         Point p = new Point(1,0,1);
         Tube tube = new Tube(1, new Ray(new Point(0,0,0), new Vector(0,0,1)));
@@ -30,11 +29,11 @@ class TubeTests {
         Vector result = tube.getNormal(p);
 
         // ============ Boundary Value Analysis Tests ==============
-        //ensure |result| = 1
+        //TC11: ensure |result| = 1
         assertEquals(1,result.length(),0.000001, "Result is not normalized");
 
         // ============ Equivalence Partitions Tests ==============
-        //ensure |result| = 1
+        //TC01: ensure |result| = 1
         assertEquals(0,result.dotProduct(new Vector(0,0,1)), "Result is not normal to the tube");
     }
 }

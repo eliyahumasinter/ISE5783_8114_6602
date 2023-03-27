@@ -17,18 +17,18 @@ class TriangleTests {
     @Test
     public void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
-        //TODO: CHECK COMMENT BELOW THIS ONE
         // TC01: There is a simple single test here - using a quad
         Point[] pts =
                 { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1) };
         Triangle triangle = new Triangle(pts[0], pts[1], pts[2]);
-        // ensure there are no exceptions
+        //TC02: ensure there are no exceptions
         assertDoesNotThrow(() -> triangle.getNormal(new Point(0, 0, 1)), "");
         // generate the test result
         Vector result = triangle.getNormal(new Point(0, 0, 1));
-        // ensure |result| = 1
+        //TC03: ensure |result| = 1
         assertEquals(1, result.length(), 0.00000001, "Polygon's normal is not a unit vector");
-        // ensure the result is orthogonal to all the edges
+
+        //TC04: ensure the result is orthogonal to all the edges
         for (int i = 0; i < 3; ++i)
             assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
                     "Polygon's normal is not orthogonal to one of the edges");
