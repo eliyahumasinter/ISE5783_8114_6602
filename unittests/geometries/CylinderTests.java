@@ -19,6 +19,7 @@ class CylinderTests {
      */
     @Test
     void testGetNormal() {
+        //TODO: add tests
         Point p = new Point(1,0,1);
         Cylinder c = new Cylinder(1, new Ray(new Point(0,0,0), new Vector(0,0,1)), 1);
         //ensure there are no exceptions

@@ -17,6 +17,7 @@ class TriangleTests {
     @Test
     public void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
+        //TODO: CHECK COMMENT BELOW THIS ONE
         // TC01: There is a simple single test here - using a quad
         Point[] pts =
                 { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1) };

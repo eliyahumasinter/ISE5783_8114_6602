@@ -1,6 +1,7 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import primitives.Point;
 import primitives.Vector;
 
@@ -11,6 +12,23 @@ import static primitives.Util.isZero;
  * Unit tests for {@link geometries.Plane} class
  */
 class PlaneTests {
+
+
+    /**
+     *   Test for Plane constructor
+     */
+    @Test
+    void Plane() {
+        // ============ Boundary Value Analysis Tests ==============
+        //TC11: Ensures first two points are not equal
+        assertThrows(IllegalArgumentException.class, (Executable) new Plane(new Point(0,0,1), new Point(0,0,1), new Point(1,0,0)));
+
+        Point[] pts = { new Point(1, 0 ,0), new Point(2, 0, 0), new Point(3, 0, 0)};
+        Vector v1 = pts[1].subtract(pts[0]);
+        Vector v2 = pts[2].subtract(pts[1]);
+        //TC12: Ensures all points are not on same line
+        assertThrows(IllegalArgumentException.class, ()->v1.crossProduct(v2), "Doesn't throw error when points are on same line" );
+    }
 
 
     @Test
