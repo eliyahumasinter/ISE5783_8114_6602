@@ -45,8 +45,12 @@ class VectorTests {
     @Test
     void testSubtract() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: test vector adding negative vector
+        // TC01: Ensures Subtraction works
         assertEquals(v1.subtract(new Point(1,1,1)), new Vector(0,1,2), "ERROR: Vector subtraction doesn't work");
+
+        // =============== Boundary Values Tests ==================
+        //TC11: Checks subtraction with itself
+        assertThrows(IllegalArgumentException.class, () -> v1.subtract(v1));
     }
 
 
@@ -55,8 +59,9 @@ class VectorTests {
      */
     @Test
     void scale() {
-        assertEquals(new Vector(2,4,6), v1.scale(2), "Scaling not working");
         // ============ Equivalence Partitions Tests ==============
+        //todo comment
+        assertEquals(new Vector(2,4,6), v1.scale(2), "Scaling not working");
 
         // =============== Boundary Values Tests ==================
     }
@@ -115,7 +120,7 @@ class VectorTests {
         // =============== Boundary Values Tests ==================
 
         // TC11: Test the length squared function on the vector (1,2,3)
-        assertTrue(isZero(v1.lengthSquared()-14), "ERROR: lengthSquared() wrong value");
+        assertEquals(v1.lengthSquared(), 14, "ERROR: lengthSquared() wrong value");
 
     }
 
@@ -129,7 +134,7 @@ class VectorTests {
         // =============== Boundary Values Tests ==================
 
         // TC11: Test the length function on the vector (0,3,4)
-        assertTrue(isZero(new Vector(0, 3, 4).length() - 5), "ERROR: length() wrong value");
+        assertEquals(new Vector(0, 3, 4).length(), 5, "ERROR: length() wrong value");
     }
 
     /**

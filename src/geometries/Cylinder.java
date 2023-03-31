@@ -25,7 +25,7 @@ public class Cylinder extends Tube {
     @Override
     public Vector getNormal(Point p) {
         //Figure out where the point is: if it's on the base return below otherwise return normal of tube
-        return getAxisRay().getDir().normalize();
+        return null;
     }
 
 

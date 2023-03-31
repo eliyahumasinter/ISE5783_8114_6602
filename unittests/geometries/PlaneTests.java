@@ -15,13 +15,13 @@ class PlaneTests {
 
 
     /**
-     *   Test for Plane constructor
+     *   Test for Plane constructor that receives 3 Points
      */
     @Test
-    void Plane() {
-        // ============ Boundary Value Analysis Tests ==============
+    void testPlane() {
+        // ======= Boundary Value Analysis Tests ==============
         //TC11: Ensures first two points are not equal
-        assertThrows(IllegalArgumentException.class, (Executable) new Plane(new Point(0,0,1), new Point(0,0,1), new Point(1,0,0)));
+        assertThrows(IllegalArgumentException.class, () -> new Plane(new Point(0,0,1), new Point(0,0,1), new Point(1,0,0)));
 
         Point[] pts = { new Point(1, 0 ,0), new Point(2, 0, 0), new Point(3, 0, 0)};
         Vector v1 = pts[1].subtract(pts[0]);

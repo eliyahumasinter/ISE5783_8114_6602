@@ -22,7 +22,6 @@ class CylinderTests {
         Point p = new Point(1,0,1);
         Cylinder c = new Cylinder(1, new Ray(new Point(0,0,0), new Vector(0,0,1)), 1);
         // ============ Equivalence Partitions Tests ==============
-
         //TC01: ensure there are no exceptions
         assertDoesNotThrow(() -> c.getNormal(p));
         Vector result = c.getNormal(p);
