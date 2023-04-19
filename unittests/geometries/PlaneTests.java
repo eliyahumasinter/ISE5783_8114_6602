@@ -64,13 +64,13 @@ class PlaneTests {
         // ============ Equivalence Partitions Tests ==============
         // **** Group: Ray's line is neither parallel nor orthogonal to plane
         // TC01: Ray intersects the plane
-        Ray ray = new Ray(new Point(-1,0,0), new Vector(1,1,0));
+        Ray ray = new Ray(new Point(0,0,-1), new Vector(0,2,1));
         List<Point> result = plane.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
-        assertEquals(List.of(p2), result, "Ray crosses plane");
+        assertEquals(List.of(new Point(0,2,0)), result, "Ray crosses plane");
 
         // TC02: Ray doesn't intersect the plane
-        ray = new Ray(new Point(-1,0,0), new Vector(1,1,5)); //Start the ray above our plane
+        ray = new Ray(new Point(1,0,1), new Vector(1,1,5)); //Start the ray above our plane
         assertNull(plane.findIntersections(ray), "Ray's line out of plane");
 
         // =============== Boundary Values Tests ==================
@@ -87,22 +87,16 @@ class PlaneTests {
         assertEquals(1, result.size(), "Wrong number of points");
         assertEquals(List.of(new Point(0,0,0)), result, "Ray crosses plane");
 
-        // TC13: Ray is in plane (0 points)
-        assertNull(plane.findIntersections(new Ray(new Point(0,0,0), new Vector(0,0,1))), "Ray's line inside of plane");
 
-        // TC13: Ray is in plane (0 points)
+        // TC14: Ray is in plane (0 points)
         assertNull(plane.findIntersections(new Ray(new Point(0,0,1), new Vector(0,0,1))), "Ray's line after plane");
 
         // **** Group: Special cases
-        // TC14: Ray is neither orthogonal nor parallel to plane and begins at the plane (0 points)
+        // TC15: Ray is neither orthogonal nor parallel to plane and begins at the plane (0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1,5,0), new Vector(1,1,1))));
 
-        // TC15: Ray is neither orthogonal nor parallel to plane and begins at one of the defining points (0 points)
+        // TC16: Ray is neither orthogonal nor parallel to plane and begins at one of the defining points (0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1,1,0), new Vector(1,1,1))));
-
-
-
-
 
 
     }
