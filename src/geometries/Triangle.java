@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
@@ -28,6 +29,22 @@ public class Triangle extends Polygon{
      */
     @Override
     public List<Point> findIntersections(Ray ray){
+        //TODO: Check this please
+        if (super.plane.findIntersections(ray).size() > 0) {
+            Vector v1 = super.vertices.get(0).subtract(ray.getPoint());
+            Vector v2 = super.vertices.get(1).subtract(ray.getPoint());
+            Vector v3 = super.vertices.get(2).subtract(ray.getPoint());
+            Vector n1 = (v1.crossProduct(v2)).normalize();
+            Vector n2 = (v2.crossProduct(v3)).normalize();
+            Vector n3 = (v3.crossProduct(v1)).normalize();
+
+            if (n1.dotProduct(ray.getDir()) > 0 && n2.dotProduct(ray.getDir()) > 0 && n3.dotProduct(ray.getDir()) > 0) {
+                return super.plane.findIntersections(ray);
+            }
+            else if (n1.dotProduct(ray.getDir()) < 0 && n2.dotProduct(ray.getDir()) < 0 && n3.dotProduct(ray.getDir()) < 0) {
+                return super.plane.findIntersections(ray);
+            }
+        }
         return null;
     }
 
