@@ -40,7 +40,7 @@ class TriangleTests {
     @Test
     void testFindIntersections() {
         Point[] pts =
-                { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(1, 1, 0) };
+                { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(1,1,0) };
         Triangle triangle = new Triangle(pts[0], pts[1], pts[2]);
         Vector v = pts[0].subtract(pts[1]);
 
@@ -52,6 +52,8 @@ class TriangleTests {
         // TC03: Ray intersects line extensions at base
         assertNull(triangle.findIntersections(new Ray(new Point(0.5, -0.2, 0.5), new Vector(0.2, -0.5, 1.5))), "Ray intersects triangle");
         // =============== Boundary Values Tests ==================
+
+        triangle = new Triangle(pts[1], pts[2], pts[3]);
         // TC11: Ray intersects triangle side extension  (0 points)
         assertNull(triangle.findIntersections(new Ray(new Point(-1, 0, -1), new Vector(0, 0, 1))), "Ray intersects side extension");
 

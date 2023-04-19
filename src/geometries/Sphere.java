@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,38 @@ public class Sphere extends RadialGeometry{
      */
     @Override
     public List<Point> findIntersections(Ray ray){
-        return null;
+        Vector u = this.center.subtract(ray.getPoint());
+        double tm = ray.getDir().dotProduct(u);
+        double d = Math.sqrt(u.lengthSquared()-(tm*tm));
+        if (d >= this.radius)
+            return null;
+
+        List<Point> results = new ArrayList<Point>();
+        double th = Math.sqrt(radius*radius - d*d);
+        double t1 = tm + th;
+        double t2 = tm - th;
+        Point p1 = ray.getPoint().add(ray.getDir().scale(t1));
+        Point p2 = ray.getPoint().add(ray.getDir().scale(t2));
+        boolean includeP1 = false;
+        boolean includeP2 = false;
+        if (t1 > 0){
+            includeP1 = true;
+        }
+        if (t2 > 0){
+            includeP2 = true;
+        }
+
+        if (!includeP1 && !includeP2)
+            return null;
+        else if (includeP1 && !includeP2){
+            return List.of(p1);
+        }
+        else if (!includeP1 && includeP2) {
+            return List.of(p2);
+        }
+        else {
+            return List.of(p1,p2);
+        }
     }
 
     /**

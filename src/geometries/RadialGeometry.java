@@ -1,5 +1,10 @@
 package geometries;
 
+import primitives.Point;
+import primitives.Ray;
+
+import java.util.List;
+
 /**
  * Abstract class for all radial geometric shapes
  * @author Eliyahu and Yishai
@@ -15,5 +20,8 @@ public abstract class RadialGeometry implements Geometry {
         this.radius = r;
     }
 
-
+    @Override
+    public List<Point> findIntersections(Ray ray){
+        return null;
+    }
 }

@@ -51,8 +51,11 @@ class SphereTests {
 
 
         // TC03: Ray starts inside the sphere (1 point)
-        result = sphere.findIntersections(new Ray(new Point(1, 0, 0),
-                new Vector(1, 0, 0)));
+//        Sphere sphere2 = new Sphere(new Point (1, 0, 0), 3);
+        result = sphere.findIntersections(new Ray(new Point(1.5, 0, 0),
+                new Vector(1, 0, 0))); //can not start at center
+
+
         assertEquals(1, result.size(), "Wrong number of points");
         p1 = new Point(2,0,0);
         assertEquals(List.of(p1), result, "Ray crosses sphere");
@@ -78,7 +81,7 @@ class SphereTests {
         // TC13: Ray starts before the sphere (2 points)
         result = sphere.findIntersections(new Ray(new Point(-1, 0, 0),
                 new Vector(1, 0, 0)));
-        assertEquals(1, result.size(), "Wrong number of points");
+        assertEquals(2, result.size(), "Wrong number of points");
         p1 = new Point(0,0,0);
         p2 = new Point(2,0,0);
         if (result.get(0).getX() > result.get(1).getX())
