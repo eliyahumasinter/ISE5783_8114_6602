@@ -5,6 +5,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
@@ -44,11 +46,11 @@ class TriangleTests {
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray intersects triangle interior (1 point)
-
+        assertEquals(List.of(new Point(0, 0.5, 0.5)), triangle.findIntersections(new Ray(new Point(0.5, 0.2, 0.3), new Vector(-0.5, 0.8, 0.7))), "Ray crosses triangle");
         // TC02: Ray intersects line extensions at vertex
-
+        assertNull(triangle.findIntersections(new Ray(new Point(0, 0, 2), new Vector(0.2, -1, 1.8))), "Ray intersects triangle");
         // TC03: Ray intersects line extensions at base
-
+        assertNull(triangle.findIntersections(new Ray(new Point(0.5, -0.2, 0.5), new Vector(0.2, -0.5, 1.5))), "Ray intersects triangle");
         // =============== Boundary Values Tests ==================
         // TC11: Ray intersects triangle side extension  (0 points)
         assertNull(triangle.findIntersections(new Ray(new Point(-1, 0, -1), new Vector(0, 0, 1))), "Ray intersects side extension");
