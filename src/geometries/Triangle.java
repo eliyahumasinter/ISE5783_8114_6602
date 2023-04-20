@@ -34,9 +34,9 @@ public class Triangle extends Polygon{
         List<Point> interceptPlane = super.plane.findIntersections(ray);
 
         if (interceptPlane != null) {
-            Vector v1 = super.vertices.get(0).subtract(ray.getPoint());
-            Vector v2 = super.vertices.get(1).subtract(ray.getPoint());
-            Vector v3 = super.vertices.get(2).subtract(ray.getPoint());
+            Vector v1 = super.vertices.get(0).subtract(ray.getP0());
+            Vector v2 = super.vertices.get(1).subtract(ray.getP0());
+            Vector v3 = super.vertices.get(2).subtract(ray.getP0());
             Vector n1 = (v1.crossProduct(v2)).normalize();
             Vector n2 = (v2.crossProduct(v3)).normalize();
             Vector n3 = (v3.crossProduct(v1)).normalize();

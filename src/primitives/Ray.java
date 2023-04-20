@@ -11,7 +11,7 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
-    public Point getPoint() {
+    public Point getP0() {
         return p0;
     }
     /**
@@ -22,6 +22,10 @@ public class Ray {
     public Ray(Point p, Vector v) {
         this.p0 = p;
         this.dir = v.normalize();
+    }
+
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
     }
 
     @Override
