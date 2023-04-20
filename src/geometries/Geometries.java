@@ -22,7 +22,7 @@ public class Geometries implements Intersectable{
         List<Point> points = new LinkedList<Point>();
         for ( Intersectable g : allGeometries){
             List<Point> geometryPoints = g.findIntersections(ray);
-            if (g != null){
+            if (geometryPoints != null){
                 for (Point p : geometryPoints){
                     points.add(p);
                 }

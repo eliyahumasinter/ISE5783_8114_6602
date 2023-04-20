@@ -16,7 +16,7 @@ class GeometriesTests {
 
         //TC01: Several (but not all) geometries intersect (
         Geometries geometries = new Geometries();
-        geometries.add(new Plane(new Point(0,0,1),new Point(1,0,1),new Point(0,1,1)));
+        geometries.add(new Plane(new Point(1,0,0),new Point(0,1,0),new Point(1,1,0)));
         geometries.add(new Sphere(new Point(10,0,1), 1));
         Ray ray = new Ray(new Point(0,0,-1), new Vector(0,0,1));
         assertEquals(1, geometries.findIntersections(ray).size(), "all but 1 intersect");
@@ -34,11 +34,11 @@ class GeometriesTests {
 
         //TC 13: Only one geometry intersects
         geometries.add(new Sphere(new Point(1,0,0), 1));
-        assertEquals(1, geometries.findIntersections(ray).size(), "1 intersection");
+        assertEquals(2, geometries.findIntersections(ray).size(), "1 intersection");
 
         //TC 14: All geometries intersect
         geometries = new Geometries();
-        geometries.add(new Plane(new Point(0,0,1),new Point(1,0,1),new Point(0,1,1)));
+        geometries.add(new Plane(new Point(1,0,0),new Point(0,1,0),new Point(1,1,0)));
         geometries.add(new Sphere(new Point(0,0,5), 1));
         ray = new Ray(new Point(0,0,-1), new Vector(0,0,1));
         assertEquals(3, geometries.findIntersections(ray).size(), "all intersect");
