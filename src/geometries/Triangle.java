@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static primitives.Util.*;
 import java.util.List;
 
 /**
@@ -30,7 +31,9 @@ public class Triangle extends Polygon{
     @Override
     public List<Point> findIntersections(Ray ray){
         //TODO: Check this please
-        if (super.plane.findIntersections(ray).size() > 0) {
+        List<Point> interceptPlane = super.plane.findIntersections(ray);
+
+        if (interceptPlane != null) {
             Vector v1 = super.vertices.get(0).subtract(ray.getPoint());
             Vector v2 = super.vertices.get(1).subtract(ray.getPoint());
             Vector v3 = super.vertices.get(2).subtract(ray.getPoint());
@@ -38,12 +41,15 @@ public class Triangle extends Polygon{
             Vector n2 = (v2.crossProduct(v3)).normalize();
             Vector n3 = (v3.crossProduct(v1)).normalize();
 
-            if (n1.dotProduct(ray.getDir()) > 0 && n2.dotProduct(ray.getDir()) > 0 && n3.dotProduct(ray.getDir()) > 0) {
-                return super.plane.findIntersections(ray);
-            }
-            else if (n1.dotProduct(ray.getDir()) < 0 && n2.dotProduct(ray.getDir()) < 0 && n3.dotProduct(ray.getDir()) < 0) {
-                return super.plane.findIntersections(ray);
-            }
+            Vector v = ray.getDir();
+            double d1 = v.dotProduct(n1);
+            double d2 = v.dotProduct(n2);
+            double d3 = v.dotProduct(n3);
+            if ( isZero(d1) || isZero(d2) || isZero(d3))
+                return null;
+            if ((d1>0 && d2 >0 && d3 > 0) || (d1 < 0 && d2 < 0 && d3 < 0))
+                return interceptPlane;
+            return null;
         }
         return null;
     }
