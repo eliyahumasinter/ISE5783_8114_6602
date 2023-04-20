@@ -46,7 +46,9 @@ class TriangleTests {
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray intersects triangle interior (1 point)
-        assertEquals(List.of(new Point(0, 0.5, 0.5)), triangle.findIntersections(new Ray(new Point(0.5, 0.2, 0.3), new Vector(-0.5, 0.8, 0.7))), "Ray crosses triangle");
+        Triangle triangle2 = new Triangle(new Point(0,0,0),new Point(10,0,0),new Point(0,10,0));
+        assertEquals(List.of(new Point(5, 4, 0)), triangle2.findIntersections(new Ray(new Point(5, 4, -1), new Vector(0, 0, 1))), "Ray crosses triangle");
+
         // TC02: Ray intersects line extensions at vertex
         assertNull(triangle.findIntersections(new Ray(new Point(0, 0, 2), new Vector(0.2, -1, 1.8))), "Ray intersects triangle");
         // TC03: Ray intersects line extensions at base
