@@ -30,7 +30,6 @@ public class Triangle extends Polygon{
      */
     @Override
     public List<Point> findIntersections(Ray ray){
-        //TODO: Check this please
         List<Point> interceptPlane = super.plane.findIntersections(ray);
 
         if (interceptPlane != null) {

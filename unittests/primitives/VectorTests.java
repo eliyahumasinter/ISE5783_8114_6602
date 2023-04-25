@@ -59,7 +59,7 @@ class VectorTests {
     @Test
     void scale() {
         // ============ Equivalence Partitions Tests ==============
-        //todo comment
+        //TC01: Ensures the scaling of a vector is calculated correctly
         assertEquals(new Vector(2,4,6), v1.scale(2), "Scaling not working");
 
         // =============== Boundary Values Tests ==================

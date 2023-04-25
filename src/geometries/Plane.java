@@ -74,15 +74,9 @@ public class Plane implements Geometry {
             return  null;
 
         double check1 = normal.dotProduct(p0.subtract(ray.getP0().add(ray.getDir().scale(t))));
-//        if (check1 == 0){
-//            System.out.println("check1 " + check1);
-//        }
 
         double check2 = normal.dotProduct(p0.subtract(ray.getP0())) - normal.scale(t).dotProduct(ray.getDir());
-//        if (check1 == 0){
-//            System.out.println("check2 " + check2);
-//            return null;
-//        }
+
 
         return List.of(ray.getPoint(t));
     }
