@@ -72,7 +72,7 @@ public class Camera {
      * @param width
      * @return this - the Camera object being manipulated
      */
-    public Camera setVPSize(double height, double width) {
+    public Camera setVPSize(double width, double height) {
         this.height = height;
         this.width = width;
         return this;
