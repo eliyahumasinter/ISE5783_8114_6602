@@ -22,7 +22,7 @@ public class Camera {
      * @param up
      * @param to
      */
-    public Camera(Point location, Vector up, Vector to) {
+    public Camera(Point location, Vector to, Vector up) {
         this.loc = location;
         this.up = up.normalize();
         this.to = to.normalize();
@@ -96,10 +96,24 @@ public class Camera {
      * @param i
      * @return
      */
-    public Ray constructRay(int nX, int nY, int j, int i) {
+    public Ray constructRay(int Nx, int Ny, int j, int i) {
+        Point Pc = this.loc.add((this.to.scale(this.distance)));
+        double Rx = this.width/Nx;
+        double Ry = this.height/Ny;
+        double Xj = (j-((Nx-1)/2.0))*Rx;
+        double Yi = -(i-((Ny-1)/2.0))*Ry;
+        Point Pij = Pc;
+        if (Xj != 0)
+            Pij = Pij.add(this.right.scale(Xj));
+//        else
+//            throw new IllegalStateException("Xj can't equal 0");
 
+        if (Yi != 0)
+            Pij = Pij.add(this.up.scale(Yi));
+//        else
+//            throw new IllegalStateException("Yi can't equal 0");
+        return new Ray(this.loc, Pij.subtract(this.loc));
 
-        return null;
     }
 
 }
