@@ -90,8 +90,8 @@ public class Camera {
 
     /**
      * Class that creates a ray starting from the camera to the View Plane
-     * @param nX
-     * @param nY
+     * @param Nx
+     * @param Ny
      * @param j
      * @param i
      * @return
@@ -105,13 +105,10 @@ public class Camera {
         Point Pij = Pc;
         if (Xj != 0)
             Pij = Pij.add(this.right.scale(Xj));
-//        else
-//            throw new IllegalStateException("Xj can't equal 0");
 
         if (Yi != 0)
             Pij = Pij.add(this.up.scale(Yi));
-//        else
-//            throw new IllegalStateException("Yi can't equal 0");
+
         return new Ray(this.loc, Pij.subtract(this.loc));
 
     }
