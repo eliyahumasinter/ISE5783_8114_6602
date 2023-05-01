@@ -84,7 +84,7 @@ public class IntegrationTests {
     /**
      * Generate rays through every point in view plane
      * @param cam  - camera
-     * @param body - a Geometry
+     * @param geo - a Geometry
      * @param nX   - rows in the VP
      * @param nY   - columns in the VP
      * @return number of intersections between view plane and geometry.

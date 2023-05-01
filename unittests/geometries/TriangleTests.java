@@ -63,7 +63,7 @@ class TriangleTests {
         assertNull(triangle.findIntersections(new Ray(new Point(0.5, 0, -1), new Vector(0, 0, 1))), "Ray intersects side");
 
         // TC13: Ray intersects triangle vertex (0 points)
-        assertNull(triangle.findIntersections(new Ray(new Point(0, 0, -1), new Vector(0, 0, 1))), "Ray intersects triangle vertext");
+        assertNull(triangle.findIntersections(new Ray(new Point(0, 0, -1), new Vector(0, 0, 1))), "Ray intersects triangle vertex");
 
     }
 
