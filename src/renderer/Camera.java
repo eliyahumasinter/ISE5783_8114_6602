@@ -1,8 +1,11 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.MissingResourceException;
 
 /**
  * A class to manage the view of objects as through a camera
@@ -10,6 +13,11 @@ import primitives.Vector;
  */
 public class Camera {
 
+    private ImageWriter ImageWriter;
+
+
+
+    private RayTracerBase rayTracer;
     private Point loc;
     private Vector to, up, right;
 
@@ -88,6 +96,16 @@ public class Camera {
         return this;
     }
 
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.ImageWriter = imageWriter;
+        return this;
+    }
+
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
     /**
      * Class that creates a ray starting from the camera to the View Plane
      * @param Nx
@@ -113,4 +131,49 @@ public class Camera {
 
     }
 
+    public Camera renderImage()
+    {
+        if(this.loc ==null || this.to ==null|| this.up==null || this.rayTracer==null || this.right==null||this.ImageWriter ==null)
+            throw new MissingResourceException("One or more of the attributes are null", null, null);
+        //throw new UnsupportedOperationException();
+
+        for (int i = 0; i < this.ImageWriter.getNy() ; i++) {
+            for (int j = 0; j < ImageWriter.getNx(); j++) {
+                Ray ray = constructRay(ImageWriter.getNx(), ImageWriter.getNy(), j, i);
+                Color color = rayTracer.traceRay(ray);
+                ImageWriter.writePixel(j, i, color);
+            }
+        }
+        return null;
+
+    }
+
+    /**
+     * Creates a grid on the Image Writer
+     * @param interval
+     * @param color
+     */
+    public void printGrid(int interval, Color color)
+    {
+        if(this.ImageWriter ==null)
+            throw new MissingResourceException("image writer not set", null, null);
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i % interval == 0 || j % interval == 0 || i == width-1 || j == height-1)
+                    this.ImageWriter.writePixel(j, i, color);
+            }
+        }
+
+    }
+
+    /**
+     * Write to image method
+     */
+    public void writeToImage()
+    {
+        if(this.ImageWriter ==null)
+            throw new MissingResourceException("image writer failed", null, null);
+        ImageWriter.writeToImage();
+    }
 }

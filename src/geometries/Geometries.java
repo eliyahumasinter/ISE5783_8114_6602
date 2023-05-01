@@ -30,9 +30,10 @@ public class Geometries implements Intersectable{
                 }
             }
         }
-        if (points.size() > 0)
-            return points;
-        return null;
+        if (points == null)
+            return null;
+        return points;
+
     }
 
 }

@@ -1,5 +1,8 @@
 package primitives;
 
+
+import java.util.List;
+
 /**
  * Manages a ray which defines a set of all points on one side of a line in one direction
  * @author Eliyahu and Yishai
@@ -24,8 +27,32 @@ public class Ray {
         this.dir = v.normalize();
     }
 
+    /**
+     * A method to simplify testing
+     *
+     * @param t
+     * @return a Vector
+     */
     public Point getPoint(double t){
         return p0.add(dir.scale(t));
+    }
+
+
+    /**
+     * Returns the closest point to the head of our ray
+     * @param points
+     * @return a point
+     */
+    public Point findClosestPoint(List<Point> points) {
+        if (points == null || points.isEmpty())
+            return null;
+
+        Point min = points.get(0);
+        for (Point point : points){
+            if (point.distance(p0) < min.distance(p0))
+                min = point;
+        }
+        return min;
     }
 
     @Override
