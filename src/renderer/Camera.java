@@ -160,7 +160,7 @@ public class Camera {
 
         for (int i = 0; i < this.ImageWriter.getNx(); i++) {
             for (int j = 0; j < this.ImageWriter.getNy(); j++) {
-                if (i % interval == 0 || j % interval == 0 || i == width-1 || j == height-1)
+                if (i % interval == 0 || j % interval == 0 || i == this.ImageWriter.getNx()-1 || j == this.ImageWriter.getNx()-1)
                     this.ImageWriter.writePixel(j, i, color);
             }
         }
