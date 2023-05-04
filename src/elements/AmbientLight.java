@@ -9,8 +9,10 @@ import primitives.Double3;
  * @Author Eliyahu and Yishai
  */
 public class AmbientLight {
-    Color intensity;
 
+    public static final AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
+
+    Color intensity;
 
     /**
      * Constructor that takes in a color and an attenuation factor
