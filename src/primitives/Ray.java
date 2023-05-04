@@ -48,9 +48,12 @@ public class Ray {
             return null;
 
         Point min = points.get(0);
+        double minDis = min.distance(p0);
         for (Point point : points){
-            if (point.distance(p0) < min.distance(p0))
+            if (point.distance(p0) < minDis) {
                 min = point;
+                minDis = point.distance(p0);
+            }
         }
         return min;
     }
