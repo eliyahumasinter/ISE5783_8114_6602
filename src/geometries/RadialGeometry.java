@@ -9,7 +9,7 @@ import java.util.List;
  * Abstract class for all radial geometric shapes
  * @author Eliyahu and Yishai
  */
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
     protected double radius;
 
     /**
@@ -21,7 +21,7 @@ public abstract class RadialGeometry implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
         return null;
     }
 }

@@ -1,7 +1,9 @@
 package geometries;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.Point;
@@ -11,7 +13,7 @@ import primitives.Vector;
 /** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
  * @author Dan */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
    /** List of polygon's vertices */
    protected final List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -81,15 +83,48 @@ public class Polygon implements Geometry {
    @Override
    public Vector getNormal(Point point) { return plane.getNormal(); }
 
-   /**
-    * Override function for findIntersections
+    /**
+    * Override function for findGeoIntersectionsHelper
     * @param ray
     * @return a list of intersecting points with the ray
     */
    @Override
-   public List<Point> findIntersections(Ray ray){
-      return null;
+   public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+         List<GeoPoint> myList = plane.findGeoIntersections(ray);
+         if (myList == null)
+            return null;
+         Vector dir = ray.getDir();
+
+         Point p0 = ray.getP0();
+         LinkedList<Vector> vectors = new LinkedList<Vector>();
+         for (Point vertex : vertices)
+            vectors.add(vertex.subtract(p0));
+
+         List<Vector> normals = new LinkedList<Vector>();
+         for (int i = 0; i < vectors.size() - 1; i++) {
+            normals.add(vectors.get(i).crossProduct(vectors.get(i + 1)));
+         }
+         normals.add(vectors.getLast().crossProduct(vectors.getFirst()));
+
+         boolean isPositive = false, isNegative = false;
+         for (var normal : normals) {
+            double result = alignZero(normal.dotProduct(dir));
+            if (result != 0) {
+               if (result > 0) {
+                  isPositive = true;
+                  if (isNegative == true)
+                     return null;
+               } else if (result < 0) {
+                  isNegative = true;
+                  if (isPositive == true)
+                     return null;
+               }
+            } else
+               return null;
+         }
+         return List.of(new GeoPoint(this, myList.get(0).point));
    }
+
 
 
 }

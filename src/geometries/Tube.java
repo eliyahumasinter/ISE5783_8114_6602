@@ -5,6 +5,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 /**
  * Class to represent a Tube 3D object
  * @author Eliyahu and Yishai
@@ -36,4 +38,6 @@ public class Tube extends RadialGeometry {
         Point O = getAxisRay().getP0().add(getAxisRay().getDir().scale(t));
         return p.subtract(O).normalize();
     }
+
+
 }

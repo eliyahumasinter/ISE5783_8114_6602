@@ -1,9 +1,6 @@
 package renderer;
 
-import geometries.Geometry;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
+import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.Double3;
 import primitives.Point;
@@ -95,9 +92,9 @@ public class IntegrationTests {
             for (int j = 0; j < nY; j++) {
                 rays.add(cam.constructRay(nX, nY, j, i));
             }
-        var allPoints = new LinkedList<Point>();
+        var allPoints = new LinkedList<Intersectable.GeoPoint>();
         for (var ray : rays) {
-            var result = geo.findIntersections(ray);
+            var result = geo.findGeoIntersectionsHelper(ray);
             if (result != null)
                 allPoints.addAll(result);
         }

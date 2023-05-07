@@ -23,14 +23,22 @@ public class Sphere extends RadialGeometry{
         return p.subtract(getCenter()).normalize();
     }
 
+    /**
+     * Getter for field center
+     * @return Point center
+     */
+    public Point getCenter() {
+        return center;
+    }
+
 
     /**
-     * Override function for findIntersections
+     * Override function for findGeoIntersectionsHelper
      * @param ray
-     * @return a list of interesecting points with the ray
+     * @return a list of intersecting points with the ray
      */
     @Override
-    public List<Point> findIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         double tm = 0;
         double d = 0;
         if (!ray.getP0().equals(center)) {
@@ -41,21 +49,19 @@ public class Sphere extends RadialGeometry{
 
         if (d >= this.radius)
             return null;
-
-
         double th = Math.sqrt(radius*radius - d*d);
         double t1 = tm + th;
         double t2 = tm - th;
-        Point p1 = null;
-        Point p2 = null;
+        GeoPoint p1 = null;
+        GeoPoint p2 = null;
         boolean includeP1 = false;
         boolean includeP2 = false;
         if (t1 > 0){
-            p1 = ray.getPoint(t1);
+            p1 = new GeoPoint(this, ray.getPoint(t1));
             includeP1 = true;
         }
         if (t2 > 0){
-            p2 = ray.getPoint(t2);
+            p2 = new GeoPoint(this, ray.getPoint(t2));
             includeP2 = true;
         }
 
@@ -70,13 +76,5 @@ public class Sphere extends RadialGeometry{
         else {
             return List.of(p1,p2);
         }
-    }
-
-    /**
-     * Getter for field center
-     * @return Point center
-     */
-    public Point getCenter() {
-        return center;
     }
 }

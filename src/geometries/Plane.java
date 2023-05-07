@@ -10,7 +10,7 @@ import java.util.List;
  * Class that represents a Plane
  * @author Yishai and Eliyahu
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     Point p0;
     Vector normal;
 
@@ -57,29 +57,25 @@ public class Plane implements Geometry {
         return normal;
     }
 
-
     /**
-     * Override function for findIntersections
+     * Override function for findGeoIntersectionsHelper
      * @param ray
-     * @return a list of interesecting points with the ray
+     * @return a list of intersecting points with the ray
      */
     @Override
-    public List<Point> findIntersections(Ray ray){
-
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         double nv = normal.dotProduct(ray.getDir());
         if (isZero(nv))
             return null;
-        double t = alignZero(normal.dotProduct(p0.subtract(ray.getP0())) / nv);
-        if (t <= 0)
-            return  null;
-
-//        double check1 = normal.dotProduct(p0.subtract(ray.getP0().add(ray.getDir().scale(t))));
-//
-//        double check2 = normal.dotProduct(p0.subtract(ray.getP0())) - normal.scale(t).dotProduct(ray.getDir());
-//
-
-        return List.of(ray.getPoint(t));
+        try {
+            double t = alignZero(normal.dotProduct(p0.subtract(ray.getP0())) / nv);
+            if (t > 0) {
+                var p1 = ray.getPoint(t);
+                return List.of(new GeoPoint(this, p1));
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
     }
-
-
 }
