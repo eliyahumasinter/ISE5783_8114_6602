@@ -144,7 +144,7 @@ public class Camera {
                 ImageWriter.writePixel(j, i, color);
             }
         }
-        return null;
+        return this;
 
     }
 

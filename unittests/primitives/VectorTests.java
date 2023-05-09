@@ -90,7 +90,6 @@ class VectorTests {
     @Test
     public void testCrossProduct() {
         Vector vr = v1.crossProduct(v3);
-        System.out.println(vr.toString());
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Test that length of cross-product is proper (orthogonal vectors taken for simplicity)
