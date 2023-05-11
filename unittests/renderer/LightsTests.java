@@ -144,6 +144,7 @@ public class LightsTests {
          .writeToImage(); //
    }
 
+<<<<<<< HEAD
    /**
     * Produce a picture of two triangles lighted by multiple light sources
     */
@@ -160,6 +161,30 @@ public class LightsTests {
               .writeToImage(); //
    }
 
+=======
+
+   @Test
+   public void sphereMultipleLights() {
+      scene1.geometries.add(sphere);
+      scene1.lights.add(new PointLight(new Color(0,255,0), new Point(50,50,25))
+              .setKl(0.0001).setKq(0.00002));
+
+      scene1.lights.add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5))
+              .setKl(0.002).setKq(0.0005));
+
+      scene1.lights.add(new DirectionalLight(new Color(255,255,255), new Vector(-1, 1, -0.5)));
+
+      ImageWriter imageWriter = new ImageWriter("multipleLightsSphere", 500, 500);
+      camera2.setImageWriter(imageWriter) //
+              .setRayTracer(new RayTracerBasic(scene1)) //
+              .renderImage() //
+              .writeToImage(); //
+
+
+   }
+
+
+>>>>>>> e8b3cd57ad9684cbd2157e299dd3c4e245bfc8ed
 //   /** Produce a picture of a sphere lighted by a narrow spotlight */
 //   @Test
 //   public void sphereSpotSharp() {
