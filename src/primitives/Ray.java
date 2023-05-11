@@ -70,6 +70,7 @@ public class Ray {
         return min;
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

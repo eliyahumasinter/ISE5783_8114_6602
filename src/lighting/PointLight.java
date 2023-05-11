@@ -53,7 +53,7 @@ public class PointLight extends Light implements LightSource {
     }
 
     /**
-     *
+     * Gets the intensity
      * @param p
      * @return Color
      */
@@ -66,8 +66,8 @@ public class PointLight extends Light implements LightSource {
 
 
     /**
-     *
-     * @param p
+     * Gets the light direction
+     * @param p - Point
      * @return Vector
      */
     @Override

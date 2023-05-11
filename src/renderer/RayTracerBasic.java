@@ -73,6 +73,12 @@ public class RayTracerBasic extends RayTracerBase {
 
     }
 
+    /**
+     * Calculates local effects for each light source on given GeoPoint
+     * @param gp - GeoPoint
+     * @param ray - Ray
+     * @return color - Color
+     */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission();
         Vector v = ray.getDir (); Vector n = gp.geometry.getNormal(gp.point);

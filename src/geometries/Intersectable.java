@@ -32,7 +32,6 @@ public abstract class Intersectable {
     public static class GeoPoint {
 
         public Geometry geometry;
-        //TODO: Check if Point and Point3D are the same...
         public Point point;
 
         /**

@@ -131,6 +131,10 @@ public class Camera {
 
     }
 
+    /**
+     * Method to render an image
+     * @return Camera object
+     */
     public Camera renderImage()
     {
         if(this.loc ==null || this.to ==null|| this.up==null || this.rayTracer==null || this.right==null||this.ImageWriter ==null)
