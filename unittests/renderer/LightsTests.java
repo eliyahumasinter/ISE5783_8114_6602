@@ -144,16 +144,22 @@ public class LightsTests {
          .writeToImage(); //
    }
 
-<<<<<<< HEAD
+
    /**
     * Produce a picture of two triangles lighted by multiple light sources
     */
    @Test
-   public void trianglesMultiple() {
+   public void trianglesMultipleLights() {
       scene2.geometries.add(triangle1, triangle2);
-      scene2.lights.add(new SpotLight(new Color(850, 900, 250), new Point(-30, -10, 100), new Vector(2,-12,-5))
-              .setKl(0.001).setKq(0.0001));
-      scene2.lights.add(new DirectionalLight(trianglesLightColor, trianglesLightDirection));
+      scene2.lights.add(new SpotLight(new Color(0, 0, 255), new Point(-30, -10, 100), new Vector(-1,-1,-2))
+              .setKl(0.0001).setKq(0.0001));
+
+      scene2.lights.add(new DirectionalLight(new Color(255,255,255), new Vector(0,-2,-2)));
+
+      scene2.lights.add(new PointLight(new Color(255,0,0), trianglesLightPosition)
+              .setKl(0.0001));
+
+
       ImageWriter imageWriter = new ImageWriter("lightTrianglesMultiple", 500, 500);
       camera2.setImageWriter(imageWriter) //
               .setRayTracer(new RayTracerBasic(scene2)) //
@@ -161,7 +167,7 @@ public class LightsTests {
               .writeToImage(); //
    }
 
-=======
+
 
    @Test
    public void sphereMultipleLights() {
@@ -184,7 +190,6 @@ public class LightsTests {
    }
 
 
->>>>>>> e8b3cd57ad9684cbd2157e299dd3c4e245bfc8ed
 //   /** Produce a picture of a sphere lighted by a narrow spotlight */
 //   @Test
 //   public void sphereSpotSharp() {
