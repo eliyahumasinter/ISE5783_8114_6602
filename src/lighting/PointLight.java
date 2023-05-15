@@ -64,6 +64,16 @@ public class PointLight extends Light implements LightSource {
         return this.intensity.scale(1/denominator);
     }
 
+    /**
+     * Get distance override
+     * @param point - Point
+     * @return double
+     */
+    @Override
+    public double getDistance(Point point) {
+        return position.distance(point);
+    }
+
 
     /**
      * Gets the light direction

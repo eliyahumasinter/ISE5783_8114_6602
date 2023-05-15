@@ -24,6 +24,10 @@ public class AmbientLight extends Light {
         super(Ia.scale(Ka));
     }
 
+    public AmbientLight(Color Ia, double Ka){
+        super(Ia.scale(Ka));
+    }
+
     /**
      * Empty constructor that calls the parent constructor with the intensity of black
      */

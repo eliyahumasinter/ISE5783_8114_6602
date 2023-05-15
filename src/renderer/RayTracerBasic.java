@@ -1,5 +1,6 @@
 package renderer;
 
+import geometries.Triangle;
 import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
@@ -14,6 +15,35 @@ import static primitives.Util.alignZero;
  * @author Eliyahu and Yishai
  */
 public class RayTracerBasic extends RayTracerBase {
+    private static final double DELTA = 0.1;
+
+    /**
+     * Function to determine if a point is not being shadowed
+     * @param l Vector
+     * @param n Vector
+     * @param gp GeoPoint
+     * @return boolean
+     */
+    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nl){
+            Vector lightDirection = l.scale(-1); // from point to light source
+
+            Vector epsVector = n.scale(nl <0 ? DELTA: -DELTA);
+            Point point = gp.point.add(epsVector);
+            Ray lightRay = new Ray(point, lightDirection);
+
+            List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+
+
+            if (intersections == null)
+                return true;
+
+            double lightDistance = light.getDistance(gp.point);
+            for (GeoPoint geopoint : intersections) {
+                if (Util.alignZero(geopoint.point.distance(gp.point) - lightDistance) <= 0);
+                    return false;
+            }
+            return true;
+    }
 
     /**
      * Constructor that takes in a scene
@@ -39,11 +69,11 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * Return the ambient light intensity
-     * @param intersection GeoPoint
+     * @param gp GeoPoint
      * @return a Color
      */
-    public Color calcColor(GeoPoint intersection, Ray ray){
-        return scene.ambientLight.getIntensity().add(calcLocalEffects(intersection, ray));
+    public Color calcColor(GeoPoint gp, Ray ray){
+        return scene.ambientLight.getIntensity().add(calcLocalEffects(gp, ray));
     }
 
 
@@ -88,9 +118,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(mat, nl)),
-                        iL.scale(calcSpecular(mat, n, l, nl, v)));
+                if (unshaded(gp, lightSource, l, n, nl)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(mat, nl)),
+                            iL.scale(calcSpecular(mat, n, l, nl, v)));
+                }
             }
         }
         return color;
