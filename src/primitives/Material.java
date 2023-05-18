@@ -66,6 +66,23 @@ public class Material {
         return this;
     }
 
+    /**
+     * set the kt parameter
+     * @param kt double
+     */
+    public Material setKt(double kt) {
+        this.Kt = new Double3(kt);
+        return this;
+    }
+
+    /**
+     * set the kr parameter
+     * @param kr double
+     */
+    public Material setKr(double kr) {
+        this.Kr = new Double3(kr);
+        return this;
+    }
 
     /**
      * set the Shininess parameter
