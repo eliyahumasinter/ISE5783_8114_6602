@@ -16,6 +16,9 @@ import static primitives.Util.alignZero;
  */
 public class RayTracerBasic extends RayTracerBase {
     private static final double DELTA = 0.1;
+    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final double MIN_CALC_COLOR_K = 0.001;
+
 
     /**
      * Function to determine if a point is not being shadowed
@@ -111,7 +114,8 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission();
-        Vector v = ray.getDir (); Vector n = gp.geometry.getNormal(gp.point);
+        Vector v = ray.getDir ();
+        Vector n = gp.geometry.getNormal(gp.point);
         double nv = alignZero(n.dotProduct(v)); if (nv == 0) return color;
         Material mat = gp.geometry.getMaterial();
         for (LightSource lightSource : scene.lights) {
@@ -128,6 +132,38 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
+    /**
+     * Calculates the reflection ray
+     * @param n - normal Vector
+     * @param v - Vector
+     * @param p - Point
+     * @param nv - dot product of n and v
+     * @return r - Ray
+     */
+    private Ray calcRayReflection(Vector n, Vector v, Point p, double nv) {
+        Vector r = v.add(n.scale(-2*nv));
+        if (!Util.isZero(nv)) {
+            Vector delta = n.scale(nv > 0 ? DELTA : -DELTA);
+            p = p.add(delta);
+        }
+        return new Ray(p, r);
+    }
+
+    /**
+     * Calculates the refraction ray
+     * @param n - normal Vector
+     * @param v - Vector
+     * @param p - Point
+     * @param nv - dot product of n and v
+     * @return  Ray
+     */
+    private Ray calcRefractionRay(Vector n, Vector v, Point p, double nv) {
+        if (!Util.isZero(nv)) {
+            Vector delta = n.scale(nv > 0 ? DELTA : -DELTA);
+            p = p.add(delta);
+        }
+        return new Ray(p, v);
+    }
 
 
 

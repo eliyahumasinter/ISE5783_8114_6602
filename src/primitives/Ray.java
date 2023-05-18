@@ -29,6 +29,8 @@ public class Ray {
         this.dir = v.normalize();
     }
 
+
+
     /**
      * A method to simplify testing
      *

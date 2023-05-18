@@ -8,6 +8,8 @@ package primitives;
 public class Material {
     public Double3 Kd = Double3.ZERO;
     public Double3 Ks =Double3.ZERO;
+    public Double3 Kt = Double3.ZERO;
+    public Double3 Kr = Double3.ZERO;
     public int shininess =0;
 
     /**
@@ -25,6 +27,24 @@ public class Material {
      */
     public Material setKs(Double3 ks) {
         this.Ks = ks;
+        return this;
+    }
+
+    /**
+     * set the kt parameter
+     * @param kt Double3
+     */
+    public Material setKt(Double3 kt) {
+        this.Kt = kt;
+        return this;
+    }
+
+    /**
+     * set the kr parameter
+     * @param kr Double3
+     */
+    public Material setKr(Double3 kr) {
+        this.Kr = kr;
         return this;
     }
 
