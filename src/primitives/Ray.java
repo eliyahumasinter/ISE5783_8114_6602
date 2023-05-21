@@ -28,8 +28,15 @@ public class Ray {
         this.p0 = p;
         this.dir = v.normalize();
     }
-
-
+    private static final double DELTA = 0.1;
+    public Ray(Point p0, Vector dir, Vector normal) {
+        this(p0, dir);
+        double nv = normal.dotProduct(this.dir);
+        if (!Util.isZero(nv)) {
+            Vector delta = normal.scale(nv > 0 ? DELTA : -DELTA);
+            this.p0 = p0.add(delta);
+        }
+    }
 
     /**
      * A method to simplify testing

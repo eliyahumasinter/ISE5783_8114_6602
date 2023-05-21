@@ -70,7 +70,7 @@ public abstract class Intersectable {
         }
     }
 
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint>findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
 
