@@ -9,7 +9,7 @@ import primitives.Vector;
  * @author Eliyahu and Yishai
  */
 public class SpotLight extends PointLight {
-    private Vector direction;
+    private final Vector direction;
 
     /**
      * Constructor for SpotLight

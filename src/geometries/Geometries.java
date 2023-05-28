@@ -6,7 +6,7 @@ import primitives.Ray;
 import java.util.List;
 import java.util.LinkedList;
 public class Geometries extends Intersectable {
-    private List<Intersectable> allGeometries;
+    private final List<Intersectable> allGeometries;
     public Geometries(){
         allGeometries = new LinkedList<Intersectable>();
     }
@@ -36,8 +36,6 @@ public class Geometries extends Intersectable {
                 }
             }
         }
-        if (geoPoints == null)
-            return null;
         return geoPoints;
     }
 

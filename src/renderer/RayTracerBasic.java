@@ -27,8 +27,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @param gp GeoPoint
      * @return boolean
      */
-
-
     private boolean unshaded(GeoPoint gp , LightSource light, Vector l, Vector n,  double nl)
     {
         Vector lightDirection = l.scale(-1); // from point to light source
@@ -129,7 +127,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @param geopoint
      * @param ray
      * @param level
-     * @param kkt2
      * @return Color
      */
 //    private Color calcGlobalEffects(GeoPoint geopoint, Ray ray, int level, Double3 k) {
@@ -156,6 +153,15 @@ public class RayTracerBasic extends RayTracerBase {
 //        return color;
 //    }
 
+
+    /**
+     * Computes global effects of a GeoPoint
+     * @param gp - GeoPoint
+     * @param ray - Ray
+     * @param level - int
+     * @param k - Double3
+     * @return Color
+     */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
         Color color = Color.BLACK;
         Vector v = ray.getDir();
@@ -165,7 +171,16 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
 
-    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {Double3 kkx = k.product(kx);
+    /**
+     * Computes Color global effects
+     * @param ray - Ray
+     * @param level - int
+     * @param k - Double3
+     * @param kx - Double3
+     * @return Color
+     */
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
+        Double3 kkx = k.product(kx);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
         if (gp == null) return scene.background.scale(kx);
@@ -268,6 +283,15 @@ public class RayTracerBasic extends RayTracerBase {
         return r.findClosestGeoPoint(intersections);
     }
 
+    /**
+     * Computes the transparency of an object
+     * @param gp - GeoPoint
+     * @param ls - LightSource
+     * @param l - Vector
+     * @param n - Vector
+     * @param nl - double
+     * @return ktr - Double3
+     */
     private Double3 transparency(GeoPoint gp, LightSource ls, Vector l, Vector n, double nl){
         Vector lightDirection = l.scale(-1); // from point to light source
         Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);

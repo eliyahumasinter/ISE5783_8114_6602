@@ -29,6 +29,13 @@ public class Ray {
         this.dir = v.normalize();
     }
     private static final double DELTA = 0.1;
+
+    /**
+     * Constructor accepting a Point and 2 Vectors
+     * @param p0 - Point
+     * @param dir - Vector
+     * @param normal - Vector
+     */
     public Ray(Point p0, Vector dir, Vector normal) {
         this(p0, dir);
         double nv = normal.dotProduct(this.dir);

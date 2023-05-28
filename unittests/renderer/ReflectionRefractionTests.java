@@ -5,6 +5,7 @@ package renderer;
 
 import static java.awt.Color.*;
 
+import lighting.DirectionalLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -12,7 +13,6 @@ import geometries.Triangle;
 import lighting.AmbientLight;
 import lighting.SpotLight;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
 /** Tests for reflection and transparency functionality, test for partial
@@ -20,9 +20,9 @@ import scene.Scene;
  * (with transparency)
  * @author dzilb */
 public class ReflectionRefractionTests {
-   private Scene scene = new Scene("Test scene");
+   private final Scene scene = new Scene("Test scene");
 
-   /** Produce a picture of a sphere lighted by a spot light */
+   /** Produce a picture of a sphere lighted by a spotlight */
    @Test
    public void twoSpheres() {
       Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
@@ -43,7 +43,7 @@ public class ReflectionRefractionTests {
          .writeToImage();
    }
 
-   /** Produce a picture of a sphere lighted by a spot light */
+   /** Produce a picture of a sphere lighted by a spotlight */
    @Test
    public void twoSpheresOnMirrors() {
       Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
@@ -76,7 +76,7 @@ public class ReflectionRefractionTests {
          .writeToImage();
    }
 
-   /** Produce a picture of a two triangles lighted by a spot light with a
+   /** Produce a picture of two triangles lighted by a spotlight with a
     * partially
     * transparent Sphere producing partial shadow */
    @Test
@@ -104,4 +104,30 @@ public class ReflectionRefractionTests {
          .renderImage() //
          .writeToImage();
    }
+
+   /*
+   Produce a picture containing four objects showing all the effects implemented in this stage
+    */
+   @Test
+   public void fourObjects() {
+      Camera camera = new Camera(new Point(120, 150, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+              .setVPSize(200, 200).setVPDistance(450);
+
+      scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+      scene.geometries.add(//
+              new Sphere(new Point(90,178,0), 150).setEmission(new Color(BLUE)) //
+                      .setMaterial(new Material().setKd(0.5).setKs(0.6).setShininess(10).setKt(0.6)),
+              new Sphere(new Point(62, 97, 0), 100).setEmission(new Color(RED)) //
+                      .setMaterial(new Material().setKd(0.3).setKs(0.5).setShininess(30).setKt(1)),
+              new Triangle(new Point(275, -376, -233), new Point(573, 456, -247), new Point(-447, 101, -145)).setEmission(new Color(30,30,30))//
+                      .setMaterial(new Material().setKr(new Double3(0.5, 0, 0.4))),//
+              new Triangle(new Point(190,278,200), new Point(-447, 101, -145), new Point(-200, -400, -151))//
+                      .setEmission(new Color(40,40,40))//
+                      .setMaterial(new Material().setKr(new Double3(0.5, 0.6, 0.4)).setKt(1)));
+
+      scene.lights.add(new DirectionalLight(new Color(WHITE), new Vector(321, 397, 69)));
+      ImageWriter iw = new ImageWriter("customScene", 500, 500);
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+   }
+
 }

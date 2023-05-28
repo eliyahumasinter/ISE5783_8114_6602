@@ -18,8 +18,10 @@ public class Camera {
 
 
     private RayTracerBase rayTracer;
-    private Point loc;
-    private Vector to, up, right;
+    private final Point loc;
+    private final Vector to;
+    private final Vector up;
+    private final Vector right;
 
     //View Plane
     private double height, width, distance;

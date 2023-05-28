@@ -40,7 +40,7 @@ public class Double3 {
    }
 
    /**
-    * 
+    * Cheacks if two Double3 objects are equal
     * @param obj
     * @return
     */

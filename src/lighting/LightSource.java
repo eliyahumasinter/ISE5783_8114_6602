@@ -14,14 +14,14 @@ public interface LightSource {
      * @param p
      * @return Color
      */
-    public Color getIntensity(Point p);
+    Color getIntensity(Point p);
 
     /**
      *
      * @param p
      * @return Vector
      */
-    public Vector getL(Point p);
+    Vector getL(Point p);
 
-    public double getDistance(Point point);
+    double getDistance(Point point);
 }
