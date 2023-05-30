@@ -5,7 +5,10 @@ package renderer;
 
 import static java.awt.Color.*;
 
+import geometries.Plane;
+import geometries.Polygon;
 import lighting.DirectionalLight;
+import lighting.PointLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -129,5 +132,32 @@ public class ReflectionRefractionTests {
       ImageWriter iw = new ImageWriter("customScene", 500, 500);
       camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
    }
+
+
+   @Test
+   public void snowMan() {
+      Camera camera = new Camera(new Point(60, 0, 37), new Vector(-2, 0, -1), new Vector(-1, 0, 2)) //
+              .setVPSize(200, 200).setVPDistance(400).rotate(0,0,0);
+
+      scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+      scene.geometries.add(//
+              new Plane(new Point(0,0,0), new Point(1,0,0),new Point(0,1,0)).setEmission(new Color(100,100,100)).setMaterial(new Material().setKd(0.2).setKs(0.3)),
+              new Sphere(new Point(0,0,5), 3).setEmission(new Color(255,0,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Sphere(new Point(0,0,10), 2).setEmission(new Color(0,255,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Sphere(new Point(0,0,13), 1).setEmission(new Color(0,0,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,-10,0), new Point(-10,10,0), new Point(-10,10,15), new Point(-10,-10,15)).setEmission(new Color(255,0,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,10,0), new Point(-10,10,15), new Point(10,20,15), new Point(10,20,0)).setEmission(new Color(0,255,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,-10,0), new Point(-10,-10,15), new Point(10,-20,15), new Point(10,-20,0)).setEmission(new Color(255,255,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100))
+      );
+
+
+      scene.lights.add(new DirectionalLight(new Color(800,500,0), new Vector(-1, 0, -2)));
+      scene.lights.add(new SpotLight(new Color(0, 0, 255), new Point(20, -20, 10), new Vector(-1,1,0))
+              .setKl(0.0001).setKq(0.0001));;
+
+      ImageWriter iw = new ImageWriter("snowMan", 500, 500);
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+   }
+
 
 }

@@ -163,7 +163,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @return Color
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
-        Color color = Color.BLACK;
         Vector v = ray.getDir();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
@@ -179,12 +178,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @param kx - Double3
      * @return Color
      */
+
     private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
         Double3 kkx = k.product(kx);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
         if (gp == null) return scene.background.scale(kx);
-        return Util.isZero(gp.geometry.getNormal(gp.point).dotProduct(ray.getDir()))? Color.BLACK : calcColor(gp, ray, level-1, kkx);}
+        return Util.isZero(gp.geometry.getNormal(gp.point).dotProduct(ray.getDir()))? Color.BLACK : calcColor(gp, ray, level-1, kkx);
+    }
 
 
 
@@ -262,8 +263,7 @@ public class RayTracerBasic extends RayTracerBase {
      * Calculates the refraction ray
      * @param n - normal Vector
      * @param v - Vector
-     * @param p - Point
-     * @param nv - dot product of n and v
+     * @param gp - GeoPoint
      * @return  Ray
      */
     private Ray constructRefractedRay(GeoPoint gp, Vector v, Vector n) {

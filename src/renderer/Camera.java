@@ -108,6 +108,17 @@ public class Camera {
         return this;
     }
 
+
+    public Camera rotate(double pitch, double yaw, double roll) {
+
+        Matrix m = new Matrix(pitch, yaw, roll);
+        Vector newTo = m.multiply(this.to).normalize();
+        Vector newUp = m.multiply(this.up).normalize();;
+        return new Camera(this.loc, newTo, newUp).setVPSize(width, height).setVPDistance(distance);
+
+    }
+
+
     /**
      * Class that creates a ray starting from the camera to the View Plane
      * @param Nx
