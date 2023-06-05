@@ -11,6 +11,11 @@ import primitives.Vector;
 public class PointLight extends Light implements LightSource {
     protected Point position;
     protected double Kc=1, Kl=0, Kq=0;
+    protected double radius;
+
+    public double getRadius() {
+        return radius;
+    }
 
     /**
      * Constructor for PointLight
@@ -20,6 +25,11 @@ public class PointLight extends Light implements LightSource {
     public PointLight(Color c, Point p){
         super(c);
         this.position = p;
+    }
+
+    public LightSource setRadius(double radius) {
+        this.radius = radius;
+        return this;
     }
 
     /**
@@ -83,6 +93,10 @@ public class PointLight extends Light implements LightSource {
     @Override
     public Vector getL(Point p){
         return p.subtract(this.position).normalize();  //this.position.subtract(p).normalize();
+    }
+
+    public Point getPosition(){
+        return this.position;
     }
 
 }

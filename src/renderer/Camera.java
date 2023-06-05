@@ -1,9 +1,6 @@
 package renderer;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.MissingResourceException;
 
@@ -18,10 +15,10 @@ public class Camera {
 
 
     private RayTracerBase rayTracer;
-    private final Point loc;
-    private final Vector to;
-    private final Vector up;
-    private final Vector right;
+    private  Point loc;
+    private  Vector to;
+    private  Vector up;
+    private  Vector right;
 
     //View Plane
     private double height, width, distance;
@@ -50,6 +47,11 @@ public class Camera {
      */
     public Point getLoc() {
         return this.loc;
+    }
+
+    public Camera setLoc(Point p){
+        this.loc = p;
+        return this;
     }
 
     /**
@@ -88,6 +90,8 @@ public class Camera {
         return this;
     }
 
+
+
     /**
      * Sets the distance from the camera to the View Plane.
      * @param distance
@@ -108,14 +112,23 @@ public class Camera {
         return this;
     }
 
+    public Camera shiftCamera(Vector v){
+         return setLoc(loc.add(v));
+
+    }
 
     public Camera rotate(double pitch, double yaw, double roll) {
+        Matrix m = new Matrix(degreesToRadians(pitch), degreesToRadians(yaw),degreesToRadians(roll));
+        this.to = m.multiply(this.to);
+        this.up = m.multiply(this.up);
+        return this;
 
-        Matrix m = new Matrix(pitch, yaw, roll);
-        Vector newTo = m.multiply(this.to).normalize();
-        Vector newUp = m.multiply(this.up).normalize();;
-        return new Camera(this.loc, newTo, newUp).setVPSize(width, height).setVPDistance(distance);
+    }
 
+
+
+    public double degreesToRadians(double degrees){
+        return degrees * Math.PI/180;
     }
 
 

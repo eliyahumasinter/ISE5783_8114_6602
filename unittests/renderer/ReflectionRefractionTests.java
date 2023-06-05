@@ -137,7 +137,35 @@ public class ReflectionRefractionTests {
    @Test
    public void snowMan() {
       Camera camera = new Camera(new Point(60, 0, 37), new Vector(-2, 0, -1), new Vector(-1, 0, 2)) //
-              .setVPSize(200, 200).setVPDistance(400).rotate(0,0,0);
+              .setVPSize(200, 200).setVPDistance(300).rotate(0,0,20);//.shiftCamera(new Vector(0,0,0));
+
+      scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+      scene.geometries.add(//
+              new Plane(new Point(0,0,0), new Point(1,0,0),new Point(0,1,0)).setEmission(new Color(100,100,100)).setMaterial(new Material().setKd(0.2).setKs(0.3)),
+              new Sphere(new Point(0,0,5), 3).setEmission(new Color(255,0,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Sphere(new Point(0,0,10), 2).setEmission(new Color(0,255,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Sphere(new Point(0,0,13), 1).setEmission(new Color(0,0,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,-10,0), new Point(-10,10,0), new Point(-10,10,15), new Point(-10,-10,15)).setEmission(new Color(255,0,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,10,0), new Point(-10,10,15), new Point(10,20,15), new Point(10,20,0)).setEmission(new Color(0,255,255)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Polygon(new Point(-10,-10,0), new Point(-10,-10,15), new Point(10,-20,15), new Point(10,-20,0)).setEmission(new Color(255,255,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)),
+              new Sphere(new Point(15,0,10), 2).setEmission(new Color(100,200,300)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100))
+
+
+      );
+
+
+      scene.lights.add(new DirectionalLight(new Color(800,500,0), new Vector(-1, 0, -2)));
+      scene.lights.add(new SpotLight(new Color(0, 0, 255), new Point(20, -20, 10), new Vector(-1,1,0))
+              .setKl(0.0001).setKq(0.0001));;
+
+      ImageWriter iw = new ImageWriter("snowMan", 500, 500);
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+   }
+
+   @Test
+   public void snowManRotate() {
+      Camera camera = new Camera(new Point(60, 0, 37), new Vector(-2, 0, -1), new Vector(-1, 0, 2)) //
+              .setVPSize(200, 200).setVPDistance(400).rotate(0,0,0).shiftCamera(new Vector(-60,0,0));
 
       scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
       scene.geometries.add(//
@@ -155,9 +183,38 @@ public class ReflectionRefractionTests {
       scene.lights.add(new SpotLight(new Color(0, 0, 255), new Point(20, -20, 10), new Vector(-1,1,0))
               .setKl(0.0001).setKq(0.0001));;
 
-      ImageWriter iw = new ImageWriter("snowMan", 500, 500);
+      ImageWriter iw = new ImageWriter("snowManRotate", 500, 500);
       camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
    }
 
+   @Test
+   public void tests() {
+      Camera camera = new Camera(new Point(3100, -3100, -2600), new Vector(-2, 2, 2), new Vector(-1, -2, 1)).setVPDistance(600).setVPSize(200, 200);
+      scene.setBackground(new Color(BLACK));
+      scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+
+      scene.geometries.add( //
+              new Plane(new Point(0,400,100), new Vector(0,-1,0)).setEmission(Color.BLACK).setMaterial(new Material().setKd(0.2).setKs(0.1).setShininess(60)),
+              new Polygon(new Point(-1, -300, 500), new Point(-1, -140, 500), new Point(1, -140, 500), new Point(1, -300, 500)).setEmission(Color.BLACK).setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(200).setKr(0.5)),
+              new Sphere(new Point(-1,-120, 500), 80).setEmission(new Color(YELLOW)).setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(200).setKt(0.8)),
+              new Polygon(new Point(-150, -150, 1999), new Point(-150, 200, 1999), new Point(150, 200, 1999), new Point(150, -150, 1999)).setEmission(Color.BLACK).setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(200).setKr(0.5)),
+              new Sphere(new Point(300,260, 600), 140).setEmission(new Color(800,0,0)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(200).setKr(0.2)),
+              new Sphere(new Point(-260, 260, 0), 140).setEmission(new Color(0,0,200)).setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20).setKt(0.25)),
+              new Sphere(new Point(-600,300,1300), 100).setEmission(new Color(700,20,20)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(200)),
+              new Triangle(new Point(-100, 400, 150), new Point(100, 400, 350), new Point(0, 200, 250)).setEmission(new Color(100,300,100)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(0.5))//
+      );
+
+      scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(0, 0, -1500), new Vector(0, 0, 1))
+              .setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no. 1
+//      scene.lights.add(new PointLight(new Color(200, 600, 200), new Point(0.001, -100, 499))
+//                      .setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no.2
+      scene.lights.add(new PointLight(new Color(200, 200, 600), new Point(0.001, -50, 1000)).setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no.3
+
+      ImageWriter iw = new ImageWriter("The magical room moving camera to right - soft shadow 2",  500, 500);
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+
+      //render.renderImage();
+      //render.writeToImage();
+   }
 
 }

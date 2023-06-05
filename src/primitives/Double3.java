@@ -31,6 +31,18 @@ public class Double3 {
       this.d3 = d3;
    }
 
+   public double getD1() {
+      return d1;
+   }
+
+   public double getD2() {
+      return d2;
+   }
+
+   public double getD3() {
+      return d3;
+   }
+
    /** Constructor to initialize Double3 based object the same number values
     * @param value number value for all 3 numbers */
    public Double3(double value) {

@@ -96,6 +96,23 @@ public class Vector extends Point{
         return new Vector(this.xyz.d1/length,this.xyz.d2/length,this.xyz.d3/length);
     }
 
+    public Vector createNormal() {
+        double x = this.getX(), y = this.getY(), z = this.getZ(), minVal = x > 0 ? x : -x;
+        int check = 1;
+        if (Math.abs(y) < minVal) {
+            minVal = y > 0 ? y : -y;
+            ++check;
+        }
+        if (Math.abs(z) < minVal) {
+            minVal = z > 0 ? z : -z;
+            ++check;
+        }
+        if (check == 1) return new Vector(0, -z, y).normalize();
+        else if (check == 2) return new Vector(-z, 0, x).normalize();
+        else return new Vector(y, -x, 0).normalize();
+
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

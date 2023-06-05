@@ -103,4 +103,23 @@ public class Point {
     public double getZ() {
         return this.xyz.d3;
     }
+
+
+    /**
+     *
+     */
+    public Point calcOrthogonalPoint(Point point){
+        if (point.xyz.d1 == 0) {
+            return new Point(1,0,0);
+        }
+        if (point.xyz.d2 == 0) {
+            return new Point(0,1,0);
+        }
+        if (point.xyz.d3 == 0) {
+            return new Point(0,0,1);
+        }
+        Point newPoint = new Point(1,-point.xyz.d1/point.xyz.d2,0);
+        return newPoint;
+    }
+
 }

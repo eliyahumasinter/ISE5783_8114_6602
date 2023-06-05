@@ -2,10 +2,12 @@ package renderer;
 
 import geometries.Triangle;
 import lighting.LightSource;
+import lighting.PointLight;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -283,6 +285,25 @@ public class RayTracerBasic extends RayTracerBase {
         return r.findClosestGeoPoint(intersections);
     }
 
+    private List<Ray> getRays(Point p0, double radius, Vector rayDir, Vector normal, int amount){
+
+        Vector x = rayDir.normalize().createNormal();;
+        Vector y = x.crossProduct(rayDir.normalize());
+
+        List<Point> points = new LinkedList<Point>();
+        for (int i=0;i<amount;i++){
+            double t1 = Util.random(-radius,radius);
+            double t2 = Util.random(-radius, radius);
+            Point p = p0.add(x.scale(t1).add(y.scale(t2)));
+            points.add(p);
+        }
+        List<Ray> rays = new LinkedList<Ray>();
+        if (points != null)
+            for (Point p : points)
+                rays.add(new Ray(p0, p.subtract(p0).normalize(), normal));
+        return rays;
+    }
+
     /**
      * Computes the transparency of an object
      * @param gp - GeoPoint
@@ -293,23 +314,71 @@ public class RayTracerBasic extends RayTracerBase {
      * @return ktr - Double3
      */
     private Double3 transparency(GeoPoint gp, LightSource ls, Vector l, Vector n, double nl){
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
-        Point point = gp.point.add(epsVector);
-        Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-        if (intersections == null) return Double3.ONE;
-
+        Vector lightDirection = l.scale(-1);
+        Ray lightRay = new Ray(gp.point, lightDirection, n);
+        Point lightSourceCenter = ((PointLight) ls).getPosition();
+        double lightSourceRadius = ((PointLight) ls).getRadius();
         double lightDistance = ls.getDistance(gp.point);
+        Double3 sumKtrAll = Double3.ZERO;
+        Double3 ktr;
 
-        Double3 ktr = new Double3(1,1,1);
-        for (GeoPoint geopoint : intersections) {
-            if (Util.alignZero(geopoint.point.distance(gp.point) - lightDistance) <= 0)
-                ktr= ktr.product(geopoint.geometry.getMaterial().Kt);
-            if (ktr.lowerThan(MIN_CALC_COLOR_K))
-                return  new Double3(0,0,0);
+        List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius,  lightRay.getDir(), n, 200);
+        for (Ray ray : beamRays){
+            List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
+            if (intersections == null){
+                sumKtrAll.add(Double3.ONE);
+                continue;
+            }
+            ktr = Double3.ONE;
+            for (GeoPoint g : intersections){
+                if (alignZero(g.point.distance(gp.point) - lightDistance) <= 0) {
+                    if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
+                        ktr = Double3.ZERO;
+                        break;
+                    }
+                    ktr.product(g.geometry.getMaterial().Kt);
+                }
+            }
+            sumKtrAll.add(ktr);
         }
-        return ktr;
+
+        return sumKtrAll.scale(1/beamRays.size());
+
+
+
+
+        //        Double3 ktr = Double3.ONE;
+//        Vector lightDirection = l.scale(-1); // from point to light source
+//        Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
+//        Point point = gp.point.add(epsVector);
+//        Ray lightRay = new Ray(point, lightDirection);
+//        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+//        if (intersections == null) return Double3.ONE;
+//
+//        double lightDistance = ls.getDistance(gp.point);
+//
+//        if (lightDistance != Double.POSITIVE_INFINITY){
+//            Point lightSourceCenter = ((PointLight) ls).getPosition();
+//            double lightSourceRadius = ((PointLight) ls).getRadius();
+//
+//            List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius,  lightRay.getDir(), n, 200);
+//            for (Ray r : beamRays) {
+//                intersections = scene.geometries.findGeoIntersections(r);
+//
+//
+//            }
+//        }
+//
+//
+//        else {
+//            for (GeoPoint geopoint : intersections) {
+//                if (Util.alignZero(geopoint.point.distance(gp.point) - lightDistance) <= 0)
+//                    ktr = ktr.product(geopoint.geometry.getMaterial().Kt);
+//                if (ktr.lowerThan(MIN_CALC_COLOR_K))
+//                    return ktr;
+//            }
+//        }
+//        return ktr;
 
     }
 
