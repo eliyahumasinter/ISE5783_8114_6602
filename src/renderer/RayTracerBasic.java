@@ -22,12 +22,20 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final Double3 INITIAL_K = Double3.ONE;
 
+
     public RayTracerBasic setSuper_sampling(boolean super_sampling) {
         this.super_sampling = super_sampling;
         return this;
     }
 
     private boolean super_sampling = false;
+
+    private int numberOfRays = 400;
+
+    public RayTracerBasic setNumberOfRays(int numberOfRays) {
+        this.numberOfRays = numberOfRays;
+        return this;
+    }
 
     /**
      * Function to determine if a point is not being shadowed
@@ -323,7 +331,7 @@ public class RayTracerBasic extends RayTracerBase {
             Double3 sumKtrAll = Double3.ZERO;
             Double3 ktr;
 
-            List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius, lightRay.getDir(), n, gp, 400);
+            List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius, lightRay.getDir(), n, gp, numberOfRays);
             for (Ray ray : beamRays) {
                 List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
                 if (intersections == null) {

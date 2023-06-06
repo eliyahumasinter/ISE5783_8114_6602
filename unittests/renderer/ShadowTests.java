@@ -21,7 +21,7 @@ public class ShadowTests {
    private final Scene         scene      = new Scene("Test scene");
    private final Camera        camera     = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0))   //
       .setVPSize(200, 200).setVPDistance(1000)                                                                       //
-      .setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true));
+      .setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true).setNumberOfRays(400));
 
    /** Helper function for the tests in this module */
    void sphereTriangleHelper(String pictName, Triangle triangle, Point spotLocation) {

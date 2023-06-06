@@ -211,7 +211,7 @@ public class ReflectionRefractionTests {
       scene.lights.add(new PointLight(new Color(200, 200, 600), new Point(0.001, -50, 1000)).setKc(1).setKl(4E-5).setKq(2E-7).setRadius(15));//no.3
 
       ImageWriter iw = new ImageWriter("The magical room moving camera to right - soft shadow 2",  500, 500);
-      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true)).renderImage().writeToImage();
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true).setNumberOfRays(400)).renderImage().writeToImage();
 
       //render.renderImage();
       //render.writeToImage();
