@@ -156,7 +156,7 @@ public class ReflectionRefractionTests {
 
       scene.lights.add(new DirectionalLight(new Color(800,500,0), new Vector(-1, 0, -2)));
       scene.lights.add(new SpotLight(new Color(0, 0, 255), new Point(20, -20, 10), new Vector(-1,1,0))
-              .setKl(0.0001).setKq(0.0001));;
+              .setKl(0.0001).setKq(0.0001).setRadius(10));
 
       ImageWriter iw = new ImageWriter("snowMan", 500, 500);
       camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
@@ -205,13 +205,13 @@ public class ReflectionRefractionTests {
       );
 
       scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(0, 0, -1500), new Vector(0, 0, 1))
-              .setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no. 1
+              .setKc(1).setKl(4E-5).setKq(2E-7).setRadius(15));//no. 1
 //      scene.lights.add(new PointLight(new Color(200, 600, 200), new Point(0.001, -100, 499))
 //                      .setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no.2
-      scene.lights.add(new PointLight(new Color(200, 200, 600), new Point(0.001, -50, 1000)).setKc(1).setKl(4E-5).setKq(2E-7).setRadius(7));//no.3
+      scene.lights.add(new PointLight(new Color(200, 200, 600), new Point(0.001, -50, 1000)).setKc(1).setKl(4E-5).setKq(2E-7).setRadius(15));//no.3
 
       ImageWriter iw = new ImageWriter("The magical room moving camera to right - soft shadow 2",  500, 500);
-      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true)).renderImage().writeToImage();
 
       //render.renderImage();
       //render.writeToImage();

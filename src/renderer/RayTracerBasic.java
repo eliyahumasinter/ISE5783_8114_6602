@@ -22,6 +22,13 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final Double3 INITIAL_K = Double3.ONE;
 
+    public RayTracerBasic setSuper_sampling(boolean super_sampling) {
+        this.super_sampling = super_sampling;
+        return this;
+    }
+
+    private boolean super_sampling = false;
+
     /**
      * Function to determine if a point is not being shadowed
      *
@@ -124,36 +131,6 @@ public class RayTracerBasic extends RayTracerBase {
         return 1 == level ? color : color.add(calcGlobalEffects(closestPoint, ray, level, kkt)).scale(kkt);
     }
 
-    /**
-     * Computes Global effects on geometries
-     * @param geopoint
-     * @param ray
-     * @param level
-     * @return Color
-     */
-//    private Color calcGlobalEffects(GeoPoint geopoint, Ray ray, int level, Double3 k) {
-//        Color color = Color.BLACK;
-//        Material material = geopoint.geometry.getMaterial();
-//        Double3 kr = material.Kr;
-//        Double3 kkr = kr.subtract(k);
-//        Vector v = ray.getDir();
-//        Vector n = geopoint.geometry.getNormal(geopoint.point);
-//        double nv = Util.alignZero(n.dotProduct(v));
-//
-//        if (!kkr.lowerThan(MIN_CALC_COLOR_K)) {
-//            Ray reflectedRay = calcRayReflection(n, v, geopoint.point, nv);
-//            GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
-//            color = color.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
-//        }
-//        Double3 kt = material.Kt;
-//        Double3 kkt = kt.subtr;
-//        if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {
-//            Ray refractedRay = calcRefractionRay(n, v, geopoint.point, nv);
-//            GeoPoint refractedPoint = findClosestIntersection(refractedRay);
-//            color = color.add(calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
-//        }
-//        return color;
-//    }
 
 
     /**
@@ -339,53 +316,53 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 transparency(GeoPoint gp, LightSource ls, Vector l, Vector n, double nl) {
         Vector lightDirection = l.scale(-1);
         Ray lightRay = new Ray(gp.point, lightDirection, n);
-        Point lightSourceCenter = ((PointLight) ls).getPosition();
-        double lightSourceRadius = ((PointLight) ls).getRadius();
-        double lightDistance = ls.getDistance(gp.point);
-        Double3 sumKtrAll = Double3.ZERO;
-        Double3 ktr;
+        if ( super_sampling == true &&  ls.getDistance(gp.point) != Double.POSITIVE_INFINITY) {
+            Point lightSourceCenter = ((PointLight) ls).getPosition();
+            double lightSourceRadius = ((PointLight) ls).getRadius();
+            double lightDistance = ls.getDistance(gp.point);
+            Double3 sumKtrAll = Double3.ZERO;
+            Double3 ktr;
 
-        List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius, lightRay.getDir(), n, gp,400);
-        for (Ray ray : beamRays) {
-            List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-            if (intersections == null) {
-                sumKtrAll = sumKtrAll.add(Double3.ONE);
-                continue;
-            }
-            ktr = Double3.ONE;
-            for (GeoPoint g : intersections) {
-                if (alignZero(g.point.distance(gp.point) - lightDistance) <= 0) {
-                    ktr = ktr.product(g.geometry.getMaterial().Kt);
+            List<Ray> beamRays = getRays(lightSourceCenter, lightSourceRadius, lightRay.getDir(), n, gp, 400);
+            for (Ray ray : beamRays) {
+                List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
+                if (intersections == null) {
+                    sumKtrAll = sumKtrAll.add(Double3.ONE);
+                    continue;
                 }
-                if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
-                    ktr = Double3.ZERO;
-                    break;
+                ktr = Double3.ONE;
+                for (GeoPoint g : intersections) {
+                    if (alignZero(g.point.distance(gp.point) - lightDistance) <= 0) {
+                        ktr = ktr.product(g.geometry.getMaterial().Kt);
+                    }
+                    if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
+                        ktr = Double3.ZERO;
+                        break;
+                    }
                 }
+                sumKtrAll = sumKtrAll.add(ktr);
+
+
             }
-            sumKtrAll = sumKtrAll.add(ktr);
+            Double3 res = sumKtrAll.scale(1.0 / beamRays.size());
 
-
+            return res;
         }
-        Double3 res = sumKtrAll.scale(1.0 / beamRays.size());
 
-        return res;
-//        Vector lightDirection = l.scale(-1); // from point to light source
-//        Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
-//        Point point = gp.point.add(epsVector);
-//        Ray lightRay = new Ray(point, lightDirection);
-//        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-//        if (intersections == null) return Double3.ONE;
-//
-//        double lightDistance = ls.getDistance(gp.point);
-//
-//        Double3 ktr = new Double3(1,1,1);
-//        for (GeoPoint geopoint : intersections) {
-//            if (Util.alignZero(geopoint.point.distance(gp.point) - lightDistance) <= 0)
-//                ktr= ktr.product(geopoint.geometry.getMaterial().Kt);
-//            if (ktr.lowerThan(MIN_CALC_COLOR_K))
-//                return  new Double3(0,0,0);
-//        }
-//        return ktr;
+
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        if (intersections == null) return Double3.ONE;
+
+        double lightDistance = ls.getDistance(gp.point);
+
+        Double3 ktr = new Double3(1,1,1);
+        for (GeoPoint geopoint : intersections) {
+            if (Util.alignZero(geopoint.point.distance(gp.point) - lightDistance) <= 0)
+                ktr= ktr.product(geopoint.geometry.getMaterial().Kt);
+            if (ktr.lowerThan(MIN_CALC_COLOR_K))
+                return  new Double3(0,0,0);
+        }
+        return ktr;
 
     }
 

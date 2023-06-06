@@ -21,14 +21,14 @@ public class ShadowTests {
    private final Scene         scene      = new Scene("Test scene");
    private final Camera        camera     = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0))   //
       .setVPSize(200, 200).setVPDistance(1000)                                                                       //
-      .setRayTracer(new RayTracerBasic(scene));
+      .setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true));
 
    /** Helper function for the tests in this module */
    void sphereTriangleHelper(String pictName, Triangle triangle, Point spotLocation) {
       scene.geometries.add(sphere, triangle.setEmission(new Color(BLUE)).setMaterial(trMaterial));
       scene.lights.add( //
                        new SpotLight(new Color(400, 240, 0), spotLocation, new Vector(1, 1, -3)) //
-                          .setKl(1E-5).setKq(1.5E-7));
+                          .setKl(1E-5).setKq(1.5E-7).setRadius(3));
       camera.setImageWriter(new ImageWriter(pictName, 400, 400)) //
          .renderImage() //
          .writeToImage();
@@ -96,7 +96,7 @@ public class ShadowTests {
       );
       scene.lights.add( //
                        new SpotLight(new Color(700, 400, 400), new Point(40, 40, 115), new Vector(-1, -1, -4)) //
-                          .setKl(4E-4).setKq(2E-5));
+                          .setKl(4E-4).setKq(2E-5).setRadius(7));
 
       camera.setImageWriter(new ImageWriter("shadowTrianglesSphere", 600, 600)) //
          .renderImage() //
