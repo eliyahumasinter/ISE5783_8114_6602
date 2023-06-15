@@ -1,8 +1,11 @@
 package renderer;
-
+import java.util.stream.*;
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
+import java.util.Random;
 
 /**
  * A class to manage the view of objects as through a camera
@@ -13,7 +16,8 @@ public class Camera {
     private ImageWriter ImageWriter;
 
 
-
+    private int threads;
+    private double printInterval;
     private RayTracerBase rayTracer;
     private  Point loc;
     private  Vector to;
@@ -22,6 +26,7 @@ public class Camera {
 
     //View Plane
     private double height, width, distance;
+    private int AntiAliasing=50;
 
     /**
      * Constructor to set Point location and Vectors up, to and right
@@ -39,6 +44,21 @@ public class Camera {
         else {
             throw new IllegalArgumentException("Vectors: up and to must be perpendicular");
         }
+    }
+
+    public Camera setMultithreading(int threads){
+        this.threads = threads;
+        return this;
+    }
+
+    public Camera setDebugPrint(double printInterval){
+        this.printInterval = printInterval;
+        return this;
+    }
+
+    public Camera setAntiAliasing(int num) {
+        this.AntiAliasing = num;
+        return this;
     }
 
     /**
@@ -140,7 +160,126 @@ public class Camera {
      * @param i
      * @return
      */
-    public Ray constructRay(int Nx, int Ny, int j, int i) {
+
+    //----------------------------------------------- ANTIALIASING FUNCTIONS --------------------------------------------------------------
+
+    public List<Ray> constructRays(int nX, int nY, int j, int i) {
+
+        Point Pc = this.loc.add(this.to.scale(distance));
+
+        double Ry = this.height / nY;
+        double Rx = this.width / nX;
+        double valt1 = Ry/2;
+        double negvalt1 = valt1* (-1);
+        double ranget1 = valt1 - negvalt1 + 1;
+        double valt2 = Rx/2;
+        double negvalt2 = valt2 * (-1);
+        double ranget2 = valt2 - negvalt2 + 1;
+        List <Ray> list = new LinkedList<>();
+        Random random = new Random();
+
+
+        double Yi = -(i - (nY - 1) / 2.0) * Ry;
+        double Xj = (j - (nX - 1) / 2.0) * Rx;
+
+
+        for (int x = 0; x < AntiAliasing; ++x) {
+            Point Pij = Pc;
+            if (Xj != 0) {
+                if (x==0){
+                    Pij = Pij.add(this.right.scale(Xj));
+                }
+                else {
+                    Pij = Pij.add(this.right.scale(Xj + random.nextDouble(ranget2)));
+                }
+            }
+            if (Yi != 0)
+            {
+                if (x==0){
+                    Pij = Pij.add(this.up.scale(Yi));
+                }
+                else {
+                    Pij = Pij.add(this.up.scale(Yi + random.nextDouble(ranget1)));
+                }
+            }
+
+            Vector Vij = Pij.subtract(this.loc);
+            Ray r = new Ray(this.loc, Vij);
+            list.add(r);
+        }
+
+
+        return list;
+
+    }
+
+    /**
+     * a function that renders the image
+     */
+    public Camera renderImage() {
+        if(this.loc ==null || this.to ==null|| this.up==null || this.rayTracer==null || this.right==null||this.ImageWriter ==null) // if any of the feilds are empty, throw exception
+            throw new MissingResourceException("one of the properties contains empty value", "Camera", null);
+        // throw new UnsupportedOperationException();
+        int nX = ImageWriter.getNx();
+        int nY = ImageWriter.getNy();
+
+        if (this.threads > 1){
+
+            Pixel.initialize(nY, nX, printInterval);
+            IntStream.range(0, nY).parallel().forEach(i -> {
+                IntStream. range(0, nX).parallel().forEach(j -> {
+//                    Color color = rayTracer.traceRay(constructRay(nX, nY, j, i));
+
+                    Color color = Color.BLACK;
+                    if (AntiAliasing > 1) {
+                        // from each pixel, make a ray, give it a color, and save it in the image
+                        List<Ray> list = constructRays(nX, nY, j, i);
+                        for (int x = 0; x < AntiAliasing; ++x) {
+                            color = color.add(rayTracer.traceRay(list.get(x)));
+                        }
+                        color = color.reduce(AntiAliasing);
+                    } else {
+                        Ray ray = constructRay(nX, nY, j, i);
+                        color = rayTracer.traceRay(ray);
+                        ImageWriter.writePixel(j, i, color);
+
+                    }
+                    ImageWriter.writePixel(j, i, color);
+                    Pixel.pixelDone();
+                    Pixel.printPixel();
+                });
+            });
+        }
+
+        else {
+
+            for (int i = 0; i < nY; i++) { // iterate through the given values and make pixels
+                for (int j = 0; j < nX; j++) {
+                    Color color = Color.BLACK;
+                    if (AntiAliasing > 1) {
+                        // from each pixel, make a ray, give it a color, and save it in the image
+                        List<Ray> list = constructRays(nX, nY, j, i);
+                        for (int x = 0; x < AntiAliasing; ++x) {
+                            color = color.add(rayTracer.traceRay(list.get(x)));
+                        }
+                        color = color.reduce(AntiAliasing);
+                    } else {
+                        Ray ray = constructRay(nX, nY, j, i);
+                        color = rayTracer.traceRay(ray);
+                        ImageWriter.writePixel(j, i, color);
+
+                    }
+                    ImageWriter.writePixel(j, i, color);
+                }
+            }
+        }
+        return this;
+
+    }
+
+
+
+    public Ray constructRay(int Nx, int Ny, double j, double i) {
         Point Pc = this.loc.add((this.to.scale(this.distance)));
         double Rx = this.width/Nx;
         double Ry = this.height/Ny;
@@ -157,33 +296,14 @@ public class Camera {
 
     }
 
-    /**
-     * Method to render an image
-     * @return Camera object
-     */
-    public Camera renderImage()
-    {
-        if(this.loc ==null || this.to ==null|| this.up==null || this.rayTracer==null || this.right==null||this.ImageWriter ==null)
-            throw new MissingResourceException("One or more of the attributes are null", null, null);
-        //throw new UnsupportedOperationException();
 
-        for (int i = 0; i < this.ImageWriter.getNy() ; i++) {
-            for (int j = 0; j < ImageWriter.getNx(); j++) {
-                Ray ray = constructRay(ImageWriter.getNx(), ImageWriter.getNy(), j, i);
-                Color color = rayTracer.traceRay(ray);
-                ImageWriter.writePixel(j, i, color);
-            }
-        }
-        return this;
-
-    }
 
     /**
      * Creates a grid on the Image Writer
      * @param interval
      * @param color
      */
-    public void printGrid(int interval, Color color)
+    public Camera printGrid(int interval, Color color)
     {
         if(this.ImageWriter ==null)
             throw new MissingResourceException("image writer not set", null, null);
@@ -194,6 +314,7 @@ public class Camera {
                     this.ImageWriter.writePixel(j, i, color);
             }
         }
+        return this;
 
     }
 

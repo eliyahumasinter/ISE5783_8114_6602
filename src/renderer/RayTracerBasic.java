@@ -352,9 +352,8 @@ public class RayTracerBasic extends RayTracerBase {
 
 
             }
-            Double3 res = sumKtrAll.scale(1.0 / beamRays.size());
+            return  sumKtrAll.reduce(beamRays.size());
 
-            return res;
         }
 
 

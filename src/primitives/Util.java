@@ -69,4 +69,8 @@ public abstract class Util {
 		return Math.random() * (max - min) + min;
 	}
 
+	public static int randInt(int min, int max) {
+		return min + (int)(Math.random() * ((max - min) + 1));
+	}
+
 }

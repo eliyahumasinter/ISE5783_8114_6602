@@ -137,7 +137,7 @@ public class ReflectionRefractionTests {
    @Test
    public void snowMan() {
       Camera camera = new Camera(new Point(60, 0, 37), new Vector(-2, 0, -1), new Vector(-1, 0, 2)) //
-              .setVPSize(200, 200).setVPDistance(300).rotate(0,0,20);//.shiftCamera(new Vector(0,0,0));
+              .setVPSize(200, 200).setVPDistance(300);
 
       scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
       scene.geometries.add(//
@@ -159,7 +159,7 @@ public class ReflectionRefractionTests {
               .setKl(0.0001).setKq(0.0001).setRadius(10));
 
       ImageWriter iw = new ImageWriter("snowMan", 500, 500);
-      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+      camera.setImageWriter(iw).setAntiAliasing(81).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
    }
 
    @Test
@@ -188,8 +188,18 @@ public class ReflectionRefractionTests {
    }
 
    @Test
+   public void antiAliasingTest(){
+      Camera camera = new Camera(new Point(50, 0, 0), new Vector(-1, 0, 0), new Vector(0, 0, 1)).setAntiAliasing(80) //
+              .setVPSize(200, 200).setVPDistance(550);
+      scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+      scene.geometries.add(new Sphere(new Point(0,0,0), 4).setEmission(new Color(255,0,0)).setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(100)));
+      ImageWriter iw = new ImageWriter("antiAliasing", 500, 500);
+      camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
+   }
+
+   @Test
    public void tests() {
-      Camera camera = new Camera(new Point(3100, -3100, -2600), new Vector(-2, 2, 2), new Vector(-1, -2, 1)).setVPDistance(600).setVPSize(200, 200);
+      Camera camera = new Camera(new Point(3100, -3100, -2600), new Vector(-2, 2, 2), new Vector(-1, -2, 1)).setVPDistance(600).setVPSize(200, 200).setAntiAliasing(80);
       scene.setBackground(new Color(BLACK));
       scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
 
@@ -213,8 +223,6 @@ public class ReflectionRefractionTests {
       ImageWriter iw = new ImageWriter("The magical room moving camera to right - soft shadow 2",  500, 500);
       camera.setImageWriter(iw).setRayTracer(new RayTracerBasic(scene).setSuper_sampling(true).setNumberOfRays(400)).renderImage().writeToImage();
 
-      //render.renderImage();
-      //render.writeToImage();
    }
-
 }
+
